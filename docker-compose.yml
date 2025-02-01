@@ -1,6 +1,7 @@
-version: '3.1'
+version: "3.1"
 services:
-  db:
+  solita-db:
+    container_name: solita-db
     image: postgres
     restart: always
     environment:
@@ -12,7 +13,18 @@ services:
       dockerfile: Dockerfile
     ports:
       - 5432:5432
+  solita-api:
+    container_name: solita-api
+    image: solita-api:latest
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    environment:
+      ASPNETCORE_HTTP_PORTS:
+    ports:
+      - 5128:5128
   adminer:
+    container_name: solita-adminer
     image: adminer
     restart: always
     ports:
