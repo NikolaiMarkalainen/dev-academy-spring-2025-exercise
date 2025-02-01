@@ -14,11 +14,7 @@ var logger = LoggerFactory.Create(logging => logging.AddConsole()).CreateLogger<
 
 logger.LogInformation(connectionString);
 builder.Services.AddDbContext<AppDbContext>(options =>
-{
-    options.UseNpgsql(connectionString)
-           .LogTo(Console.WriteLine, LogLevel.Information) // Logs SQL queries to console
-           .EnableSensitiveDataLogging(); // Enables logging of sensitive data (like query parameters)
-});
+options.UseNpgsql(connectionString));
 
 builder.Services.AddControllers();
 builder.Services.AddScoped<ElectricityServices>();
