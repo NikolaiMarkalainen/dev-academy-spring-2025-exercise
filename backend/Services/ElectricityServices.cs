@@ -41,14 +41,14 @@ namespace backend.Services
             return averagePrice;
         }
 
-        public async Task<int> GetDailyNegativeElectricityPriceDurationAsync(DateTime date)
+        public async Task<ConsecutiveHours> GetDailyNegativeElectricityPriceDurationAsync(DateTime date)
         {
             var utcDate = CommonHelpers.ConverToUTC(date);
             var negativePriceWindows = await _context.Electricity.Where(p => p.Date.Date == utcDate)
             .Where(p => p.HourlyPrice < 0).ToListAsync();
 
-            int consecutiveHours = 0;
-            List<int> consecutiveInstanceDurations = [];
+            ConsecutiveHours consecutiveData = new() { Length = 0, DayTime = [] };
+            List<ConsecutiveHours> consecutiveInstanceDurations = [consecutiveData];
             if(negativePriceWindows.Count > 1)
             {
                 for(int i = 0; i + 1 < negativePriceWindows.Count; i++)
@@ -57,20 +57,21 @@ namespace backend.Services
                     var nextHour = negativePriceWindows[i + 1];
                     if(nextHour.StartTime.Hour - currentHour.StartTime.Hour == 1)
                     {
-                        consecutiveHours += 1;
+                        consecutiveData.Length += 1;
+                        consecutiveData.DayTime.Add(currentHour.StartTime.Hour);
                     }
                     else
                     {
-                        consecutiveInstanceDurations.Add(consecutiveHours);
-                        consecutiveHours = 0;
+                        consecutiveInstanceDurations.Add(consecutiveData);
+                        consecutiveData = new() { Length = 0, DayTime = [] };
                     }
                 }
-                consecutiveInstanceDurations.Add(consecutiveHours);
+                consecutiveInstanceDurations.Add(consecutiveData);
             }
 
-            int longestConsecutiveHours = consecutiveInstanceDurations.Count > 0 ? consecutiveInstanceDurations.Max() : 0;
+            ConsecutiveHours longestConsecutiveData = consecutiveInstanceDurations.OrderByDescending(m => m.Length).FirstOrDefault() ?? consecutiveData;
 
-            return longestConsecutiveHours;
+            return longestConsecutiveData;
         }
     }
 }
