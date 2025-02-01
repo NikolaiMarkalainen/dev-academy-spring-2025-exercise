@@ -23,15 +23,11 @@ namespace backend.Services
             return await _context.Electricity.Where(p => p.Date.Date == utcDate).ToListAsync();
         }
 
-        public async Task<DailyConsumption> GetDailyElectricityConsumptionDataAsync(DateTime date)
+        public async Task<decimal> GetDailyElectricityConsumptionDataAsync(DateTime date)
         {
             var utcDate = CommonHelpers.ConverToUTC(date);
             var dailyConsumption = await _context.Electricity.Where(p => p.Date.Date == utcDate).SumAsync(p => p.ConsumptionAmount) ?? 0;
-            return new DailyConsumption
-            {
-                Consumption = dailyConsumption,
-                Date = utcDate
-            };
+            return dailyConsumption;
         }
 
         public async Task<decimal> GetDailyAverageElectricityPriceAsync(DateTime date)
@@ -72,6 +68,18 @@ namespace backend.Services
             ConsecutiveHours longestConsecutiveData = consecutiveInstanceDurations.OrderByDescending(m => m.Length).FirstOrDefault() ?? consecutiveData;
 
             return longestConsecutiveData;
+        }
+
+        public async Task<AllDailyFilters> GetAllDailyFilteredDataAsync(DateTime date)
+        {
+            AllDailyFilters dailyData = new AllDailyFilters
+            {
+                Date = CommonHelpers.ConverToUTC(date),
+                AveragePrice = await GetDailyAverageElectricityPriceAsync(date),
+                DailyConsumption = await GetDailyElectricityConsumptionDataAsync(date),
+                NegativePriceLength = await GetDailyNegativeElectricityPriceDurationAsync(date),
+            };
+            return dailyData;
         }
     }
 }

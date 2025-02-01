@@ -49,5 +49,12 @@ namespace backend.Controllers
             var result = await _electricityServices.GetDailyNegativeElectricityPriceDurationAsync(date);
             return Ok(result);
         }
+
+        [HttpGet("daily/filters")]
+        public async Task<IActionResult> GetAllDailyFilteredData(DateTime date)
+        {
+            var result = await _electricityServices.GetAllDailyFilteredDataAsync(date);
+            return Ok(result);
+        }
     }
 }
