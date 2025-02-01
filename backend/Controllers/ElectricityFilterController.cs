@@ -16,10 +16,10 @@ namespace backend.Controllers
             _filterServices = filterServices;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<ApiResponse>> GetDailyElectricity(int pageIndex = 1, int pageSize = 15)
+        [HttpPost]
+        public async Task<ActionResult<ApiResponse>> GetDailyElectricity(FilterRequest request)
         {
-            var dailyList = await _filterServices.GetTableValues(pageIndex, pageSize);
+            var dailyList = await _filterServices.GetTableValues(request);
             return new ApiResponse(true, null, dailyList);
         }
     }

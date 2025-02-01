@@ -17,50 +17,50 @@ namespace backend.Controllers
         }
 
         [HttpGet("data")]
-        public async Task<IActionResult> GetAllElectricityData()
+        public async Task<ActionResult<ApiResponse>> GetAllElectricityData()
         {
             var result = await _electricityServices.GetAllElectricityDataAsync();
-            return Ok(result);
+            return new ApiResponse(true, null, result);
         }
         [HttpGet()]
-        public async Task<IActionResult> GetDailyElectricityData(DateTime date)
+        public async Task<ActionResult<ApiResponse>> GetDailyElectricityData(DateTime date)
         {
             var result = await _electricityServices.GetDailyElictricityDataAsync(date.Date);
-            return Ok(result);
+            return new ApiResponse(true, null, result);
         }
 
         [HttpGet("consumption")]
-        public async Task<IActionResult> GetDailyConsumptionElectricityData(DateTime date)
+        public async Task<ActionResult<ApiResponse>> GetDailyConsumptionElectricityData(DateTime date)
         {
             var result = await _electricityServices.GetDailyElectricityConsumptionDataAsync(date);
-            return Ok(result);
+            return new ApiResponse(true, null, result);
         }
 
         [HttpGet("price")]
-        public async Task<IActionResult> GetDailyPriceElectricityData(DateTime date)
+        public async Task<ActionResult<ApiResponse>> GetDailyPriceElectricityData(DateTime date)
         {
             var result = await _electricityServices.GetDailyAverageElectricityPriceAsync(date);
-            return Ok(new { dailyPrice = result });
+            return new ApiResponse(true, null, result);
         }
 
         [HttpGet("negative")]
-        public async Task<IActionResult> GetDailyNegativePriceWindow(DateTime date)
+        public async Task<ActionResult<ApiResponse>> GetDailyNegativePriceWindow(DateTime date)
         {
             var result = await _electricityServices.GetDailyNegativeElectricityPriceDurationAsync(date);
-            return Ok(result);
+            return new ApiResponse(true, null, result);
         }
 
         [HttpGet("filters")]
-        public async Task<IActionResult> GetAllDailyFilteredData(DateTime date)
+        public async Task<ActionResult<ApiResponse>> GetAllDailyFilteredData(DateTime date)
         {
             var result = await _electricityServices.GetAllDailyFilteredDataAsync(date);
-            return Ok(result);
+            return new ApiResponse(true, null, result);
         }
         [HttpGet("populate/database")]
-        public async Task<IActionResult> PopulateDailyTable()
+        public async Task<ActionResult<ApiResponse>> PopulateDailyTable()
         {
             await _electricityServices.ProcessAndStoreDailyDataAsync();
-            return Ok();
+            return new ApiResponse(true, null, Ok());
         }
     }
 }
