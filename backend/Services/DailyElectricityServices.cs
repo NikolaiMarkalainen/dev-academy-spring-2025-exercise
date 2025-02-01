@@ -14,7 +14,7 @@ namespace backend.Services
 
         public async Task<List<Electricity>> GetAllElectricityDataAsync()
         {
-            return await _context.Electricity.Where(p => p.ConsumptionAmount != null).ToListAsync();
+            return await _context.Electricity.Where(p => p.ConsumptionAmount == null).ToListAsync();
         }
 
         public async Task<List<Electricity>> GetDailyElictricityDataAsync(DateTime date) 
@@ -26,15 +26,15 @@ namespace backend.Services
         public async Task<decimal> GetDailyElectricityConsumptionDataAsync(DateTime date)
         {
             var utcDate = CommonHelpers.ConverToUTC(date);
-            var dailyConsumption = await _context.Electricity.Where(p => p.Date.Date == utcDate).SumAsync(p => p.ConsumptionAmount) ?? 0;
-            return dailyConsumption;
+            var dailyConsumption = await _context.Electricity.Where(p => p.Date.Date == utcDate).SumAsync(p => p.ConsumptionAmount);
+            return dailyConsumption ?? 0;
         }
 
         public async Task<decimal> GetDailyAverageElectricityPriceAsync(DateTime date)
         {
             var utcDate = CommonHelpers.ConverToUTC(date);
-            var averagePrice = await _context.Electricity.Where(p => p.Date.Date == utcDate).AverageAsync(p => p.HourlyPrice) ?? 0;
-            return averagePrice;
+            var averagePrice = await _context.Electricity.Where(p => p.Date.Date == utcDate).AverageAsync(p => p.HourlyPrice);
+            return averagePrice ?? 0;
         }
 
         public async Task<ConsecutiveHours> GetDailyNegativeElectricityPriceDurationAsync(DateTime date)
@@ -70,16 +70,44 @@ namespace backend.Services
             return longestConsecutiveData;
         }
 
-        public async Task<AllDailyFilters> GetAllDailyFilteredDataAsync(DateTime date)
+        public async Task<decimal> GetDailyProductionAmountAsync(DateTime date)
         {
-            AllDailyFilters dailyData = new AllDailyFilters
+            var utcDate = CommonHelpers.ConverToUTC(date);
+            return await _context.Electricity.Where(p => p.Date.Date == utcDate).SumAsync(p => p.ProductionAmount) ?? 0;
+        } 
+        public async Task<DailyValues> GetAllDailyFilteredDataAsync(DateTime date)
+        {
+            DailyValues dailyData = new DailyValues
             {
                 Date = CommonHelpers.ConverToUTC(date),
                 AveragePrice = await GetDailyAverageElectricityPriceAsync(date),
                 DailyConsumption = await GetDailyElectricityConsumptionDataAsync(date),
                 NegativePriceLength = await GetDailyNegativeElectricityPriceDurationAsync(date),
+                Production = await GetDailyProductionAmountAsync(date)
             };
             return dailyData;
+        }
+
+        public async Task ProcessAndStoreDailyDataAsync()
+        {
+            var test = await _context.Electricity.ToListAsync();
+            var allElectricityData = await _context.Electricity.GroupBy(e=> e.Date).ToListAsync();
+
+            var filteredDailyData = new List<DailyValues>();
+
+            foreach(var item in allElectricityData)
+            {
+                filteredDailyData.Add(new DailyValues
+                {
+                    Date = CommonHelpers.ConverToUTC(item.Key),
+                    AveragePrice = await GetDailyAverageElectricityPriceAsync(item.Key),
+                    DailyConsumption = await GetDailyElectricityConsumptionDataAsync(item.Key),
+                    NegativePriceLength = await GetDailyNegativeElectricityPriceDurationAsync(item.Key),
+                    Production = await GetDailyProductionAmountAsync(item.Key)
+                });
+            }
+            await _context.DailyElectricity.AddRangeAsync(filteredDailyData);
+            await _context.SaveChangesAsync();
         }
     }
 }

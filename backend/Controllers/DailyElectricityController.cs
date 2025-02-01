@@ -56,5 +56,11 @@ namespace backend.Controllers
             var result = await _electricityServices.GetAllDailyFilteredDataAsync(date);
             return Ok(result);
         }
+        [HttpGet("populate/database")]
+        public async Task<IActionResult> PopulateDailyTable()
+        {
+            await _electricityServices.ProcessAndStoreDailyDataAsync();
+            return Ok();
+        }
     }
 }

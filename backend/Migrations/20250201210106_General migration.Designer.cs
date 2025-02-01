@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using backend.Data;
@@ -12,9 +13,11 @@ using backend.Data;
 namespace backend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250201210106_General migration")]
+    partial class Generalmigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,16 +34,16 @@ namespace backend.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<decimal?>("AveragePrice")
+                    b.Property<decimal>("AveragePrice")
                         .HasColumnType("numeric");
 
-                    b.Property<decimal?>("DailyConsumption")
+                    b.Property<decimal>("DailyConsumption")
                         .HasColumnType("numeric");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<decimal?>("Production")
+                    b.Property<decimal>("Production")
                         .HasColumnType("numeric");
 
                     b.HasKey("Id");
@@ -57,7 +60,7 @@ namespace backend.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<decimal?>("ConsumptionAmount")
+                    b.Property<decimal>("ConsumptionAmount")
                         .HasColumnType("numeric")
                         .HasColumnName("consumptionamount");
 
@@ -65,11 +68,11 @@ namespace backend.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("date");
 
-                    b.Property<decimal?>("HourlyPrice")
+                    b.Property<decimal>("HourlyPrice")
                         .HasColumnType("numeric")
                         .HasColumnName("hourlyprice");
 
-                    b.Property<decimal?>("ProductionAmount")
+                    b.Property<decimal>("ProductionAmount")
                         .HasColumnType("numeric")
                         .HasColumnName("productionamount");
 
@@ -79,7 +82,7 @@ namespace backend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("electricitydata", (string)null);
+                    b.ToTable("Electricity");
                 });
 
             modelBuilder.Entity("DailyValues", b =>

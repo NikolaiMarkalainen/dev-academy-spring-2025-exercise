@@ -10,25 +10,16 @@ namespace backend.Data
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options){}
 
         public DbSet<Electricity> Electricity { get; set; }
-
+        public DbSet<DailyValues> DailyElectricity { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
             
             modelBuilder.Entity<Electricity>().ToTable("electricitydata");
-
+            modelBuilder.Entity<DailyValues>().ToTable("dailyelectricity");
             /*Dont allow entries that dont contribute to data instead eat away at memory*/
-            modelBuilder.Entity<Electricity>()
-            .Property(e => e.HourlyPrice)
-            .IsRequired();
-
-            modelBuilder.Entity<Electricity>()
-            .Property(e => e.ProductionAmount)
-            .IsRequired();
-
-            modelBuilder.Entity<Electricity>()
-            .Property(e => e.HourlyPrice)
-            .IsRequired();
+            
+            modelBuilder.Entity<DailyValues>().OwnsOne(d => d.NegativePriceLength);
         }
     }
 }

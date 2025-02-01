@@ -18,7 +18,7 @@ options.UseNpgsql(connectionString));
 
 builder.Services.AddControllers();
 builder.Services.AddScoped<DailyElectricityServices>();
-
+builder.Services.AddScoped<ElectricityFilterServices>();
 
 var app = builder.Build();
 
