@@ -40,10 +40,12 @@ namespace backend.Migrations
                         .HasColumnName("date");
 
                     b.Property<decimal?>("HourlyPrice")
+                        .IsRequired()
                         .HasColumnType("numeric")
                         .HasColumnName("hourlyprice");
 
                     b.Property<decimal?>("ProductionAmount")
+                        .IsRequired()
                         .HasColumnType("numeric")
                         .HasColumnName("productionamount");
 

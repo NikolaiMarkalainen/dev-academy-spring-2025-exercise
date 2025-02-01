@@ -7,11 +7,11 @@ namespace backend.Controllers
 {
     [ApiController]
     [Route("/api/[controller]")]
-    public class ElectricityController : ControllerBase
+    public class DailyElectricityController : ControllerBase
     {
-        private readonly ElectricityServices _electricityServices;
+        private readonly DailyElectricityServices _electricityServices;
 
-        public ElectricityController(ElectricityServices electricityServices)
+        public DailyElectricityController(DailyElectricityServices electricityServices)
         {
             _electricityServices = electricityServices;
         }
@@ -22,35 +22,35 @@ namespace backend.Controllers
             var result = await _electricityServices.GetAllElectricityDataAsync();
             return Ok(result);
         }
-        [HttpGet("daily")]
+        [HttpGet()]
         public async Task<IActionResult> GetDailyElectricityData(DateTime date)
         {
             var result = await _electricityServices.GetDailyElictricityDataAsync(date.Date);
             return Ok(result);
         }
 
-        [HttpGet("daily/consumption")]
+        [HttpGet("consumption")]
         public async Task<IActionResult> GetDailyConsumptionElectricityData(DateTime date)
         {
             var result = await _electricityServices.GetDailyElectricityConsumptionDataAsync(date);
             return Ok(result);
         }
 
-        [HttpGet("daily/price")]
+        [HttpGet("price")]
         public async Task<IActionResult> GetDailyPriceElectricityData(DateTime date)
         {
             var result = await _electricityServices.GetDailyAverageElectricityPriceAsync(date);
             return Ok(new { dailyPrice = result });
         }
 
-        [HttpGet("daily/negative")]
+        [HttpGet("negative")]
         public async Task<IActionResult> GetDailyNegativePriceWindow(DateTime date)
         {
             var result = await _electricityServices.GetDailyNegativeElectricityPriceDurationAsync(date);
             return Ok(result);
         }
 
-        [HttpGet("daily/filters")]
+        [HttpGet("filters")]
         public async Task<IActionResult> GetAllDailyFilteredData(DateTime date)
         {
             var result = await _electricityServices.GetAllDailyFilteredDataAsync(date);

@@ -4,10 +4,10 @@ using backend.Data;
 using backend.Utils;
 namespace backend.Services
 {
-    public class ElectricityServices
+    public class DailyElectricityServices
     {
         private readonly AppDbContext _context;
-        public ElectricityServices(AppDbContext context)
+        public DailyElectricityServices(AppDbContext context)
         {
             _context = context;
         }

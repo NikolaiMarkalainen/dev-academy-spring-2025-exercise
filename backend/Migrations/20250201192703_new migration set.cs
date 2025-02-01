@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace backend.Migrations
 {
     /// <inheritdoc />
-    public partial class Initializedmodelfordatabase : Migration
+    public partial class newmigrationset : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -20,9 +20,9 @@ namespace backend.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     starttime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    productionamount = table.Column<decimal>(type: "numeric", nullable: true),
+                    productionamount = table.Column<decimal>(type: "numeric", nullable: false),
                     consumptionamount = table.Column<decimal>(type: "numeric", nullable: true),
-                    hourlyprice = table.Column<decimal>(type: "numeric", nullable: true)
+                    hourlyprice = table.Column<decimal>(type: "numeric", nullable: false)
                 },
                 constraints: table =>
                 {

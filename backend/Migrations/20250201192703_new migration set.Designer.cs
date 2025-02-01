@@ -12,8 +12,8 @@ using backend.Data;
 namespace backend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250201161425_Initialized model for database")]
-    partial class Initializedmodelfordatabase
+    [Migration("20250201192703_new migration set")]
+    partial class newmigrationset
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -43,10 +43,12 @@ namespace backend.Migrations
                         .HasColumnName("date");
 
                     b.Property<decimal?>("HourlyPrice")
+                        .IsRequired()
                         .HasColumnType("numeric")
                         .HasColumnName("hourlyprice");
 
                     b.Property<decimal?>("ProductionAmount")
+                        .IsRequired()
                         .HasColumnType("numeric")
                         .HasColumnName("productionamount");
 

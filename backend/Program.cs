@@ -17,7 +17,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 options.UseNpgsql(connectionString));
 
 builder.Services.AddControllers();
-builder.Services.AddScoped<ElectricityServices>();
+builder.Services.AddScoped<DailyElectricityServices>();
 
 
 var app = builder.Build();
