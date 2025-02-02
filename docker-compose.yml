@@ -20,6 +20,8 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     environment:
+      ASPNETCORE_ENVIRONMENT: Docker
+      DOTNET_ENVIRONMENT: Docker
       ASPNETCORE_HTTP_PORTS:
     ports:
       - 5128:5128

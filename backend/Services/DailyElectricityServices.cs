@@ -14,7 +14,7 @@ namespace backend.Services
 
         public async Task<List<Electricity>> GetAllElectricityDataAsync()
         {
-            return await _context.Electricity.Where(p => p.ConsumptionAmount == null).ToListAsync();
+            return await _context.Electricity.ToListAsync();
         }
 
         public async Task<List<Electricity>> GetDailyElictricityDataAsync(DateTime date) 
@@ -89,7 +89,7 @@ namespace backend.Services
         }
 
         public async Task ProcessAndStoreDailyDataAsync()
-        {
+        {      ASPNETCORE_HTTP_PORTS:
             var test = await _context.Electricity.ToListAsync();
             var allElectricityData = await _context.Electricity.GroupBy(e=> e.Date).ToListAsync();
 

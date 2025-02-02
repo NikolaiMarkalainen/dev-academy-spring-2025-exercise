@@ -13,8 +13,8 @@ using backend.Data;
 namespace backend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250201211210_Fixed")]
-    partial class Fixed
+    [Migration("20250202095046_Setup migration")]
+    partial class Setupmigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -82,7 +82,10 @@ namespace backend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("electricitydata", (string)null);
+                    b.ToTable("electricitydata", null, t =>
+                        {
+                            t.ExcludeFromMigrations();
+                        });
                 });
 
             modelBuilder.Entity("DailyValues", b =>

@@ -54,52 +54,32 @@ namespace backend.Services
     }
         public async Task<PaginatedElectricity<DailyValues>> GetTableValues(FilterRequest request)
         {
-            // sent enum and enum will tell what to 
-            // Start with the query
             var query = _context.DailyElectricity.AsQueryable();
 
-            // Apply the filter rule based on the provided request.Filter
             if (request.Filter != null)
             {
                 query = await ApplyFilterRule(query, request.Filter.Value, request.OrderBy ?? true);
             }
             else
             {
-                // If no filter provided, default to ordering by Date (descending)
                 query = query.OrderByDescending(d => d.Date);
             }
 
-            // Apply pagination
             var electricityData = await query
                 .Skip((request.PageIndex - 1) * request.PageSize)
                 .Take(request.PageSize)
                 .ToListAsync();
 
-            // Get the total count for pagination
             int count = await _context.DailyElectricity.CountAsync();
             int totalPages = (int)Math.Ceiling(count / (double)request.PageSize);
 
             return new PaginatedElectricity<DailyValues>(electricityData, request.PageIndex, totalPages);
         }
 
-        // public async Task<PaginatedElectricity<DailyValues>> FilterByDate(int pageIndex, int pageSize, bool ascending)
-        // {
-        //     var electricityData =
-        //     ascending ? await _context.DailyElectricity
-        //     .OrderByDescending(d => d.Date)
-        //     .Skip((pageIndex - 1) * pageSize)
-        //     .Take(pageSize)
-        //     .ToListAsync()
-        //     : await _context.DailyElectricity
-        //     .OrderBy(d => d.Date)
-        //     .Skip((pageIndex - 1) * pageSize)
-        //     .Take(pageSize)
-        //     .ToListAsync();
+        public async Task<List<DailyValues>> GetAllDailyDataAvailable()
+        {
+            return await _context.DailyElectricity.ToListAsync();    
+        }
 
-        //     int count = await _context.DailyElectricity.CountAsync();
-        //     int totalPages = (int)Math.Ceiling(count / (double)pageSize);
-
-        //     return new PaginatedElectricity<DailyValues>(electricityData, pageIndex, totalPages);
-        // }
     }
 }

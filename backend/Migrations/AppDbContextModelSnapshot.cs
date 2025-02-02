@@ -79,7 +79,10 @@ namespace backend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("electricitydata", (string)null);
+                    b.ToTable("electricitydata", null, t =>
+                        {
+                            t.ExcludeFromMigrations();
+                        });
                 });
 
             modelBuilder.Entity("DailyValues", b =>
