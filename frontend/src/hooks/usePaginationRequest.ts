@@ -41,7 +41,7 @@ export const usePagnitaionRequest = () => {
   }, []);
 
   const setOrderDirection = useCallback(() => {
-    setAsc(!asc);
+    setAsc((prevAsc) => !prevAsc);
   }, []);
 
   const setFilterOption = useCallback((filter: FilterOptions) => {

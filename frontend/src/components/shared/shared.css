@@ -1,0 +1,47 @@
+.button {
+  font: var(--primary-font-family);
+  background-color: var(--button-color);
+  width: auto;
+  border: transparent;
+  padding: 0.5vw;
+  border-radius: 1vh;
+}
+
+.input {
+  background-color: var(--input-field-bg);
+  border-radius: 5rem;
+  height: 5vh;
+  width: 10vw;
+  border: 1px solid transparent;
+  color: var(--header-text);
+  font-size: var(--font-size-body-normal);
+}
+
+.dropdown-parent {
+  position: relative;
+  display: inline-block;
+}
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: var(--card-bg-main);
+  font-size: var(--font-size-body-small);
+  color: var(--header-text);
+  z-index: 1;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+}
+.dropdown-content p {
+  text-decoration: none;
+  display: block;
+  width: 10vw;
+  padding: 0.2vw;
+}
+
+.dropdown-content p:hover {
+  background-color: var(--card-bg-secondary);
+  cursor: pointer;
+}
+
+.dropdown-parent:hover .dropdown-content {
+  display: block;
+}

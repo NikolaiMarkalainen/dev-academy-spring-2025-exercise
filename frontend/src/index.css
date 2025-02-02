@@ -1,10 +1,43 @@
 #root {
-}
+  /*General bgs*/
+  --bg-alternate: #161618;
+  --bg-accent: #2a2f3b;
 
+  /*Card bgs */
+  --card-bg-main: #202127;
+  --card-bg-secondary: #3a4149;
+  --card-bg-accent: #4a3b5c;
+
+  /*Text and Button colors */
+
+  --button-text: #243600;
+  --button-color: #acd268;
+  --button-border: transparent;
+  --alt-button-color: #32363f;
+
+  --header-text: #dfdfd6;
+  --general-text: #98989f;
+  --sub-text: #606061;
+  --input-field-bg: #161618;
+  --error-text: #d45656;
+  /* Font sizes */
+
+  --font-size-body-normal: 1vw;
+  --font-size-body-small: 0.875vw;
+
+  --font-size-card-title: 1.5vw;
+  --font-size-header: 2.5vw;
+}
 :root {
+  --bg-root: #1b1b1f;
+  --primary-font-family: "Inter", ui-sans-serif, system-ui, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   height: auto;
-  max-width: 1440px;
-  max-height: 2000px;
+  --general-text: #98989f;
+
+  background-color: var(--bg-root);
+  font-family: var(--primary-font-family);
+  color: var(--general-text);
 }
 
 .grid {
@@ -19,4 +52,36 @@
   padding: 20px;
   text-align: center;
   background-color: #f0f0f0;
+}
+
+.filter {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  justify-content: space-evenly;
+}
+
+.data-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* 5 equal columns */
+  gap: 10px;
+  width: 100%;
+  text-align: center;
+}
+
+/* Style for headers */
+.grid-header {
+  display: contents; /* Keeps it in the grid structure */
+  font-weight: bold;
+  background-color: #f0f0f0;
+}
+
+/* Style for each row */
+.grid-row {
+  display: contents;
+}
+
+.grid-row div,
+.grid-header div {
+  padding: 10px;
+  border: 1px solid #ddd;
 }

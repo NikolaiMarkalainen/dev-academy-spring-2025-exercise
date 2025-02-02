@@ -3,6 +3,8 @@ import "../index.css";
 import { getPaginatedDailyValues } from "../services/electricitySerivce";
 import { FilterOptions, IPaginatedRequst } from "../types/IPaginatedRequest";
 import { usePagnitaionRequest } from "../hooks/usePaginationRequest";
+import { Filter } from "./Filter";
+import { DataGrid } from "./DataGrid";
 
 export const Main = () => {
   const test: IPaginatedRequst = {
@@ -22,16 +24,12 @@ export const Main = () => {
   console.log(paginationData);
   return (
     <div>
-      <button onClick={() => adjustedAmountOfItemsOnPage(25)}>
-        adjust ITems
-      </button>
-      <button onClick={() => setOrderDirection()}> order direction</button>
-      <button onClick={() => changePage(2)}>set page to 2</button>
-      <button onClick={() => setFilterOption(FilterOptions.Production)}>
-        asdas
-      </button>
-      <>test</>
-      {paginationData?.data.items[0].averagePrice}
+      <Filter
+        setAsc={setOrderDirection}
+        setFilterOptions={setFilterOption}
+        setItemsOnPage={adjustedAmountOfItemsOnPage}
+      />
+      {paginationData?.data && <DataGrid data={paginationData.data} />}
     </div>
   );
 };
