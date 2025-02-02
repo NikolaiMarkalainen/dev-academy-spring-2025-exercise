@@ -1,0 +1,22 @@
+#root {
+}
+
+:root {
+  height: auto;
+  max-width: 1440px;
+  max-height: 2000px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* 5 columns */
+  grid-template-rows: repeat(15, 1fr); /* 15 rows */
+  gap: 10px; /* Optional: Adjusts the space between grid items */
+}
+
+.grid-item {
+  border: 1px solid #ccc;
+  padding: 20px;
+  text-align: center;
+  background-color: #f0f0f0;
+}

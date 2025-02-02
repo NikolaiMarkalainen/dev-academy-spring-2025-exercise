@@ -23,9 +23,23 @@ logger.LogInformation(connectionString);
 builder.Services.AddDbContext<AppDbContext>(options =>
 options.UseNpgsql(connectionString));
 
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsPolicy", policyBuilder =>
+    {
+        policyBuilder.WithOrigins(builder.Configuration["FrontendUrl"]!)
+        .AllowAnyHeader()
+        .WithMethods("GET", "POST");
+    });
+});
+
 builder.Services.AddControllers();
 builder.Services.AddScoped<DailyElectricityServices>();
 builder.Services.AddScoped<ElectricityFilterServices>();
+
+
+
 
 var app = builder.Build();
 
@@ -41,6 +55,8 @@ using (var scope = app.Services.CreateScope())
         await dailyElectricityServices.ProcessAndStoreDailyDataAsync();
     }
 }
+
+app.UseCors("CorsPolicy");
 
 app.UseRouting();
 app.MapControllers();
