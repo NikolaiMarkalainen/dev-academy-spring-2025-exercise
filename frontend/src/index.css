@@ -80,6 +80,7 @@
 
 .grid-row {
   display: contents;
+  cursor: pointer;
 }
 
 .grid-row div,
@@ -105,17 +106,36 @@
   color: var(--button-color);
 }
 
-.input-container {
-  position: absolute;
-  top: 21%;
-  left: 7.5%;
-  width: 5vw;
-}
-
 .page-change {
   display: flex;
   justify-content: center;
-  background-color: #161618;
   padding-bottom: 5vh;
   width: 100%;
+}
+
+.single-day-chart-container {
+  display: flex;
+  height: 100%;
+  width: 75%;
+  padding-left: 12.5%;
+  padding-bottom: 15vh;
+}
+
+.single-day-button {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: auto;
+}
+
+.select-items {
+  position: absolute;
+  left: 74%;
+  top: 17.5%;
+  display: flex;
+  justify-content: space-evenly;
+  width: 10%;
+}
+.select-items p {
+  cursor: pointer;
 }

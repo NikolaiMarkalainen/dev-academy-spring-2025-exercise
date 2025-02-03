@@ -8,6 +8,7 @@ interface IProps {
   disabled?: boolean;
   pageNumber?: number;
   color?: string;
+  width?: string;
 }
 
 export const Button = (props: IProps) => {
@@ -25,7 +26,7 @@ export const Button = (props: IProps) => {
     <div style={{ padding: "0.5vw" }}>
       <h3>{props.headerText ?? ""}</h3>
       <button
-        style={{ backgroundColor: props.color }}
+        style={{ backgroundColor: props.color, width: props.width }}
         disabled={props.disabled}
         onClick={handleClick}
         className="button">

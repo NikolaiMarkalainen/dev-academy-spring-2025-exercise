@@ -6,8 +6,9 @@ export interface IConsecutiveHours {
 export interface IDailyValues {
   id: number;
   date: Date;
-  averagePrice: number;
   dailyConsumption: number;
   negativePriceLength: IConsecutiveHours;
+  averagePrice: number;
+
   production: number;
 }

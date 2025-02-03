@@ -1,7 +1,11 @@
-export const Header = () => {
+interface props {
+  title: string;
+}
+
+export const Header = (props: props) => {
   return (
     <div className="header-container">
-      <h1> Electricity data </h1>
+      <h1>{props.title}</h1>
     </div>
   );
 };

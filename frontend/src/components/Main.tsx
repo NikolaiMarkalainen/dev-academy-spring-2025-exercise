@@ -1,20 +1,10 @@
-import { useEffect, useState } from "react";
 import "../index.css";
-import { getPaginatedDailyValues } from "../services/electricitySerivce";
-import { FilterOptions, IPaginatedRequst } from "../types/IPaginatedRequest";
 import { usePagnitaionRequest } from "../hooks/usePaginationRequest";
-import { Filter } from "./Filter";
-import { DataGrid } from "./DataGrid";
+import { MainDataGrid } from "./MainDataGrid";
 import { Header } from "./Header";
 import { Button } from "./shared/Button";
 
 export const Main = () => {
-  const test: IPaginatedRequst = {
-    orderBy: true,
-    pageSize: 20,
-    pageIndex: 1,
-    filter: 1,
-  };
   const {
     adjustedAmountOfItemsOnPage,
     changePage,
@@ -24,22 +14,13 @@ export const Main = () => {
     asc,
   } = usePagnitaionRequest();
 
-  const [previousNumberButtons, setPreviousButtons] = useState<number[]>([]);
-
-  const generatePaginationButtons = () => {};
-
   console.log(paginationData);
   return (
     <div>
-      <Header />
-      {/* <Filter
-        setAsc={setOrderDirection}
-        setFilterOptions={setFilterOption}
-        setItemsOnPage={adjustedAmountOfItemsOnPage}
-      /> */}
+      <Header title="Electricity data" />
       {paginationData?.data && (
         <div>
-          <DataGrid
+          <MainDataGrid
             data={paginationData.data}
             setOrderDirection={setOrderDirection}
             setFilterOptions={setFilterOption}

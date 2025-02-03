@@ -17,11 +17,11 @@ const getFilterOptionText = (option: FilterOptions): string => {
     case FilterOptions.AveragePrice:
       return "Average Price";
     case FilterOptions.DailyConsumption:
-      return "Daily Consumption";
+      return "Daily Consumption (MWh/h)";
     case FilterOptions.NegativePriceLength:
-      return "Negative Price Length";
+      return "Consecutive hours of negative prices ";
     case FilterOptions.Production:
-      return "Production";
+      return "Production (MWh/h)";
     default:
       return "Unknown";
   }

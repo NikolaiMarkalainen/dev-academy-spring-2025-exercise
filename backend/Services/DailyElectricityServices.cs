@@ -89,7 +89,7 @@ namespace backend.Services
         }
 
         public async Task ProcessAndStoreDailyDataAsync()
-        {      ASPNETCORE_HTTP_PORTS:
+        {
             var test = await _context.Electricity.ToListAsync();
             var allElectricityData = await _context.Electricity.GroupBy(e=> e.Date).ToListAsync();
 
