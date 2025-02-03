@@ -1,19 +1,20 @@
 .button {
   font: var(--primary-font-family);
   background-color: var(--button-color);
-  width: auto;
+  width: 100%;
   border: transparent;
-  padding: 0.5vw;
-  border-radius: 1vh;
+  font-size: var(--font-size-body-normal);
+  padding: 1vw;
+  border-radius: 5rem;
 }
 
 .input {
   background-color: var(--input-field-bg);
   border-radius: 5rem;
-  height: 5vh;
-  width: 10vw;
+  width: 100%;
   border: 1px solid transparent;
   color: var(--header-text);
+  padding: 0.75vw;
   font-size: var(--font-size-body-normal);
 }
 

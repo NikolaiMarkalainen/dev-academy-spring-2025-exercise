@@ -16,9 +16,20 @@ const options = getDropDownOptions();
 export const Filter = (props: props) => {
   return (
     <div className="filter">
-      <Input onInputIntChange={props.setItemsOnPage} />
-      <Button function={props.setAsc} text="Direction" />
-      <Dropdown dropDownOptions={options} onSelect={props.setFilterOptions} />
+      <Input
+        headerText="Amount of items per page"
+        onInputIntChange={props.setItemsOnPage}
+      />
+      <Dropdown
+        headerText="Sort items by"
+        dropDownOptions={options}
+        onSelect={props.setFilterOptions}
+      />
+      <Button
+        headerText="Sort direction"
+        function={props.setAsc}
+        text="Direction"
+      />
     </div>
   );
 };

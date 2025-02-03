@@ -42,46 +42,80 @@
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr); /* 5 columns */
-  grid-template-rows: repeat(15, 1fr); /* 15 rows */
-  gap: 10px; /* Optional: Adjusts the space between grid items */
-}
-
-.grid-item {
-  border: 1px solid #ccc;
-  padding: 20px;
-  text-align: center;
-  background-color: #f0f0f0;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(15, 1fr);
+  gap: 10px;
 }
 
 .filter {
   display: grid;
   grid-template-columns: auto auto auto;
   justify-content: space-evenly;
+  margin-bottom: 10vh;
+  margin-top: 2vh;
+  justify-items: center;
+  text-align: center;
+}
+.filter h3 {
+  font-size: var(--font-size-card-title);
+  color: var(--button-color);
 }
 
 .data-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr); /* 5 equal columns */
-  gap: 10px;
-  width: 100%;
+  grid-template-columns: repeat(5, 13.5vw);
   text-align: center;
+  width: 70%;
+  margin: 0 15vw;
+  font-size: var(--font-size-body-normal);
 }
 
-/* Style for headers */
 .grid-header {
-  display: contents; /* Keeps it in the grid structure */
+  display: contents;
   font-weight: bold;
-  background-color: #f0f0f0;
+  color: var(--button-color);
+  cursor: pointer;
+  font-size: 1.25vw;
 }
 
-/* Style for each row */
 .grid-row {
   display: contents;
 }
 
 .grid-row div,
 .grid-header div {
-  padding: 10px;
-  border: 1px solid #ddd;
+  padding: 1vh;
+  border-bottom: 1px solid var(--button-color);
+}
+
+.header-container {
+  font-size: var(--font-size-header);
+  flex: 1;
+  text-align: center;
+  color: var(--button-color);
+}
+
+.ascdesc {
+  position: absolute;
+  left: 85%;
+  height: 4vh;
+  padding: 1vw;
+  font-size: 2vw;
+  cursor: pointer;
+  color: var(--button-color);
+}
+
+.input-container {
+  position: absolute;
+  top: 21%;
+  left: 7.5%;
+  width: 5vw;
+}
+
+.page-change {
+  display: flex;
+  justify-content: center;
+  background-color: #161618;
+  padding-bottom: 5vh;
+  width: 100%;
 }
