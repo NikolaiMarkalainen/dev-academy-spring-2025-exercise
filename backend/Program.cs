@@ -34,6 +34,7 @@ builder.Services.AddCors(options =>
     });
 });
 
+logger.LogInformation(builder.Configuration["FrontendUrl"]!);
 builder.Services.AddControllers();
 builder.Services.AddScoped<DailyElectricityServices>();
 builder.Services.AddScoped<ElectricityFilterServices>();
@@ -42,6 +43,8 @@ builder.Services.AddScoped<ElectricityFilterServices>();
 
 
 var app = builder.Build();
+app.UseCors("CorsPolicy");
+
 
 using (var scope = app.Services.CreateScope())
 {
@@ -56,7 +59,6 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
-app.UseCors("CorsPolicy");
 
 app.UseRouting();
 app.MapControllers();

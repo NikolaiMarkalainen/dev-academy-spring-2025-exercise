@@ -8,11 +8,6 @@ WORKDIR /backend
 # ENV DOTNET_ENVIRONMENT=Production
 COPY . .
 
-RUN apt-get update && apt-get -y install sudo
-
-RUN dotnet tool install --global dotnet-ef
-ENV PATH="$PATH:/root/.dotnet/tools"
-
 FROM base AS build
 WORKDIR /src
 COPY ["backend.csproj", "./"]
