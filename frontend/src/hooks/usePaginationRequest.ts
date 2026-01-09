@@ -7,35 +7,10 @@ import { IPaginatedRequst } from "../types/IPaginatedRequest";
 export const usePagnitaionRequest = () => {
   const [filterBy, setFilterBy] = useState<FilterOptions>(FilterOptions.Date);
   const [asc, setAsc] = useState<boolean>(false);
-  const date = new Date("2023-08-01T00:00:00Z");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [itemsOnPage, setItemsOnPage] = useState<number>(15);
-  const [requestBody, setRequestBody] = useState<IPaginatedRequst>({
-    filter: filterBy,
-    orderBy: asc,
-    pageIndex: currentPage,
-    pageSize: itemsOnPage,
-  });
-  const [paginationData, setPaginationData] = useState<IPaginatedResult>({
-    data: {
-      hasPreviousPage: false,
-      hasNextPage: false,
-      items: [
-        {
-          id: 1,
-          date: date,
-          averagePrice: 0,
-          dailyConsumption: 0,
-          negativePriceLength: { length: 0, hours: [0] },
-          production: 0,
-        },
-      ],
-      pageIndex: 1,
-      totalPages: 1,
-    },
-    success: true,
-    message: "",
-  });
+  const [requestBody, setRequestBody] = useState<IPaginatedRequst>();
+  const [paginationData, setPaginationData] = useState<IPaginatedResult | undefined>();
 
   useEffect(() => {
     setRequestBody({
@@ -45,7 +20,6 @@ export const usePagnitaionRequest = () => {
       pageSize: itemsOnPage,
     });
   }, [filterBy, asc, currentPage, itemsOnPage]);
-
   useEffect(() => {
     if (requestBody) {
       sendRequestForData(requestBody);

@@ -1,4 +1,3 @@
-version: "3.1"
 services:
   solita-front:
     container_name: solita-front
@@ -35,12 +34,12 @@ services:
       DOTNET_ENVIRONMENT: Docker
     ports:
       - 5128:5128
-  adminer:
-    container_name: solita-adminer
-    image: adminer
-    restart: always
-    ports:
-      - 8088:8080
+  # adminer:
+  #   container_name: solita-adminer
+  #   image: adminer
+  #   restart: always
+  #   ports:
+  #     - 8088:8080
   nginx:
     image: nginx
     volumes:

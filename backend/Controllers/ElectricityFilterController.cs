@@ -2,31 +2,25 @@
 
 using Microsoft.AspNetCore.Mvc;
 using backend.Services;
+using System.Web;
+using System.Text;
+using System.Buffers;
+using Microsoft.AspNetCore.Http.Extensions;
 
 namespace backend.Controllers
 {
     [ApiController]
     [Route("/api/[controller]")]
-    public class FilterElectricityController : ControllerBase
+    public class FilterElectricityController(ElectricityFilterServices filterServices) : ControllerBase
     {
-        private readonly ElectricityFilterServices _filterServices;
+        private readonly ElectricityFilterServices _filterServices = filterServices;
 
-        public FilterElectricityController(ElectricityFilterServices filterServices)
-        {
-            _filterServices = filterServices;
-        }
-
-        [HttpPost]
-        public async Task<ActionResult<ApiResponse>> GetDailyElectricity(FilterRequest request)
-        {
-            var dailyList = await _filterServices.GetTableValues(request);
-            return new ApiResponse(true, null, dailyList);
-        }
         [HttpGet]
-        public async Task<ActionResult<ApiResponse>> GetAllDailyFields()
+        public async Task<ActionResult<ApiResponse>> GetDailyElectricity()
         {
-            var dailyFields = await _filterServices.GetAllDailyDataAvailable();
-            return new ApiResponse(true, null, dailyFields);
+            var url = Request.QueryString;
+            var dailyList = await _filterServices.GetTableValues(url);
+            return new ApiResponse(true, "", dailyList);
         }
     }
 }

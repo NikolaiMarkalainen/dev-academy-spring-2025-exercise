@@ -1,8 +1,14 @@
 
 
+using System.Collections.Specialized;
+using System.ComponentModel.DataAnnotations;
+using System.Web;
 using backend.Data;
 using Microsoft.EntityFrameworkCore;
-
+using System.Linq.Expressions;
+using Microsoft.VisualBasic;
+using System.Diagnostics;
+using System.Security.Cryptography.X509Certificates;
 namespace backend.Services
 {
     public class ElectricityFilterServices
@@ -10,6 +16,8 @@ namespace backend.Services
         private readonly AppDbContext _context;
         private readonly DailyElectricityServices _dailyservices;
 
+        private static readonly int DEFAULT_PAGE = 1;
+        private static readonly int DEFAULT_PAGE_SIZE = 10;
         public ElectricityFilterServices(AppDbContext context, DailyElectricityServices dailyservices)
         {
             _context = context;
@@ -19,66 +27,95 @@ namespace backend.Services
         // return a list that displays dashboard data ? 
         // public async Task<List><Electricity>
 
-    public async Task<IQueryable<DailyValues>> ApplyFilterRule(IQueryable<DailyValues> query, FilterOptions filter, bool ascending)
-    {
-        switch (filter)
+        public async Task<QueryResult<DailyValues>> ApplyFilterRule(IQueryable<DailyValues> query, NameValueCollection paramCollection)
         {
-            case FilterOptions.Date:
-                return ascending
-                    ? query.OrderBy(d => d.Date)
-                    : query.OrderByDescending(d => d.Date);
+            // base some constants we use in case none provided
+            bool asc = true;
+            int pageSize = DEFAULT_PAGE_SIZE;
+            int pageIndex = DEFAULT_PAGE;
+            QueryFields? sortField = null;
+            foreach (var key in paramCollection.AllKeys)
+            {
 
-            case FilterOptions.AveragePrice:
-                return ascending
-                    ? query.OrderBy(d => d.AveragePrice)
-                    : query.OrderByDescending(d => d.AveragePrice);
+                var value = paramCollection[key];
+                if (key == null)
+                {
+                    throw new ArgumentException($"Something went wrong with key missing");
+                }
+                if (QueryConfig.FieldSorts.TryGetValue(key, out var field))
+                {
+                    sortField = field;
+                    continue;
+                }
+                if (QueryConfig.PageSorts.TryGetValue(key, out var pageField))
+                {
 
-            case FilterOptions.DailyConsumption:
-                return ascending
-                    ? query.OrderBy(d => d.DailyConsumption)
-                    : query.OrderByDescending(d => d.DailyConsumption);
+                    switch (pageField)
+                    {
+                        case SortFields.OrderBy:
+                            asc = !string.Equals(value, "desc", StringComparison.OrdinalIgnoreCase);
+                            break;
+                        case SortFields.PageIndex:
+                            if (int.TryParse(value, out var page))
+                                pageIndex = Math.Max(1, page);
+                            break;
+                        case SortFields.PageSize:
+                            if (int.TryParse(value, out var size))
+                                pageSize = Math.Max(1, size);
+                            break;
+                    }
+                    continue;
+                }
+                throw new ArgumentException($"Unknown query parameter: {key}");
+            }
+            if (sortField.HasValue)
+            {
+                Expression<Func<DailyValues, object>> selector = sortField.Value switch
+                {
+                    QueryFields.Date => q => q.Date,
+                    QueryFields.AveragePrice => q => q.AveragePrice,
+                    QueryFields.DailyConsumption => q => q.DailyConsumption,
+                    QueryFields.Production => q => q.Production,
+                    QueryFields.NegativePriceLength => q => q.NegativePriceLength,
+                    _ => throw new UnreachableException()
+                };
 
-            case FilterOptions.NegativePriceLength:
-                return ascending
-                    ? query.OrderBy(d => d.NegativePriceLength.Length)
-                    : query.OrderByDescending(d => d.NegativePriceLength.Length);
-
-            case FilterOptions.Production:
-                return ascending
-                    ? query.OrderBy(d => d.Production)
-                    : query.OrderByDescending(d => d.Production);
-
-            default:
-                throw new ArgumentOutOfRangeException();
+                query = asc ? query.OrderBy(selector) : query.OrderByDescending(selector);
+            }
+            return new QueryResult<DailyValues>(query, pageSize, pageIndex);
         }
-    }
-        public async Task<PaginatedElectricity<DailyValues>> GetTableValues(FilterRequest request)
+        public async Task<PaginatedElectricity<DailyValues>> GetTableValues(QueryString request)
         {
             var query = _context.DailyElectricity.AsQueryable();
-
-            if (request.Filter != null)
+            var pageIndex = DEFAULT_PAGE;
+            var pageSize = DEFAULT_PAGE_SIZE;
+            // has query params 
+            if (request.HasValue)
             {
-                query = await ApplyFilterRule(query, request.Filter.Value, request.OrderBy ?? true);
+                var paramCollection = HttpUtility.ParseQueryString(request.Value);
+                var (filteredQuery, index, size) = await ApplyFilterRule(query, paramCollection);
+                query = filteredQuery;
+                pageIndex = index;
+                pageSize = size;
             }
             else
             {
                 query = query.OrderByDescending(d => d.Date);
             }
-
             var electricityData = await query
-                .Skip((request.PageIndex - 1) * request.PageSize)
-                .Take(request.PageSize)
+                .Skip((pageIndex - 1) * pageSize)
+                .Take(pageSize)
                 .ToListAsync();
 
             int count = await _context.DailyElectricity.CountAsync();
-            int totalPages = (int)Math.Ceiling(count / (double)request.PageSize);
+            int totalPages = (int)Math.Ceiling(count / (double)pageSize);
 
-            return new PaginatedElectricity<DailyValues>(electricityData, request.PageIndex, totalPages);
+            return new PaginatedElectricity<DailyValues>(electricityData, pageIndex, totalPages);
         }
 
         public async Task<List<DailyValues>> GetAllDailyDataAvailable()
         {
-            return await _context.DailyElectricity.ToListAsync();    
+            return await _context.DailyElectricity.ToListAsync();
         }
 
     }

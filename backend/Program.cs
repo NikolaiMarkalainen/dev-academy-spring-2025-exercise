@@ -30,7 +30,7 @@ builder.Services.AddCors(options =>
     {
         policyBuilder.WithOrigins(builder.Configuration["FrontendUrl"]!)
         .AllowAnyHeader()
-        .WithMethods("GET", "POST");
+        .WithMethods("GET");
     });
 });
 
@@ -53,7 +53,7 @@ using (var scope = app.Services.CreateScope())
     dbContext.Database.Migrate();
     dbContext.RemoveNullEntriesFromElectricityData();
     var hasDailyElectricity = dbContext.DailyElectricity.Any();
-    if(!hasDailyElectricity)
+    if (!hasDailyElectricity)
     {
         await dailyElectricityServices.ProcessAndStoreDailyDataAsync();
     }

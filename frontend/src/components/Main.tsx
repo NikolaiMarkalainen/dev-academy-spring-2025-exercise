@@ -1,9 +1,24 @@
 import "../index.css";
 import { usePagnitaionRequest } from "../hooks/usePaginationRequest";
 import { MainDataGrid } from "./MainDataGrid";
-import { Header } from "./Header";
 import { Button } from "./shared/Button";
+import { Card, CardHeader, keyframes, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import { FilterOptions } from "../types/types";
 
+
+
+// TODO:  Navigate last page
+// Filter buttons visible on keys
+// Can zoom out and zoom in
+// Tailwind
+// Utilize a component library
+// Error handling to service fetch
+// utilize url params for fetching data remove POST change to Query Params
+// filter on mobile not visible
+// playwright tests
+// mobile view fix on graph views font increase
+// add caching to backend perhaps ?
+// move types to common types folder
 export const Main = () => {
   const {
     adjustedAmountOfItemsOnPage,
@@ -13,73 +28,30 @@ export const Main = () => {
     paginationData,
     asc,
   } = usePagnitaionRequest();
-
-  console.log(paginationData);
+  console.log(paginationData)
   return (
-    <div>
-      <Header title="Electricity data" />
-      {paginationData?.data && (
-        <div>
-          <MainDataGrid
-            data={paginationData.data}
-            setOrderDirection={setOrderDirection}
-            setFilterOptions={setFilterOption}
-            setAmountOfItemsOnPage={adjustedAmountOfItemsOnPage}
-            asc={asc}
-          />
-          <div className="page-change">
-            <Button
-              text={"<"}
-              disabled={!paginationData.data.hasPreviousPage}
-              changePage={changePage}
-              pageNumber={paginationData.data.pageIndex - 1}
-            />
-            {paginationData.data.pageIndex - 1 > 1 && (
-              <Button
-                text={(paginationData.data.pageIndex - 1).toString()}
-                changePage={changePage}
-                pageNumber={paginationData.data.pageIndex - 1}
-              />
-            )}
-            <Button
-              text={paginationData.data.pageIndex.toString()}
-              changePage={changePage}
-              pageNumber={paginationData.data.pageIndex}
-              color="#32363f"
-            />
-            {paginationData.data.pageIndex + 1 <=
-              paginationData.data.totalPages && (
-              <Button
-                text={(paginationData.data.pageIndex + 1).toString()}
-                changePage={changePage}
-                pageNumber={paginationData.data.pageIndex + 1}
-              />
-            )}
-            {paginationData.data.pageIndex + 2 <=
-              paginationData.data.totalPages && (
-              <Button
-                text={(paginationData.data.pageIndex + 2).toString()}
-                changePage={changePage}
-                pageNumber={paginationData.data.pageIndex + 2}
-              />
-            )}
-            {paginationData.data.pageIndex + 3 <=
-              paginationData.data.totalPages && (
-              <Button
-                text={(paginationData.data.pageIndex + 3).toString()}
-                changePage={changePage}
-                pageNumber={paginationData.data.pageIndex + 3}
-              />
-            )}
-            <Button
-              disabled={!paginationData.data.hasNextPage}
-              text={">"}
-              changePage={changePage}
-              pageNumber={paginationData.data.pageIndex + 1}
-            />
-          </div>
-        </div>
-      )}
-    </div>
+    <Card>
+      <CardHeader subheader="Daily data on electric consumption nation wide" title="Electric Consumption" sx={{ textAlign: "center"}}/>
+          <TableContainer>
+            <Table>
+            <TableHead>
+              <TableRow>
+                {Object.entries(FilterOptions).map(([key, val]) => (
+                  <TableCell key={key}>{val}</TableCell>
+              ))}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {paginationData?.data.items.map((m) => (
+                <TableRow>
+                  {Object.entries(m).map(([key, val]) => (
+                  <TableCell key={key}>{val}</TableCell>
+                  ))}
+              </TableRow>
+            ))}
+            </TableBody>
+            </Table> 
+          </TableContainer>
+    </Card>
   );
 };
