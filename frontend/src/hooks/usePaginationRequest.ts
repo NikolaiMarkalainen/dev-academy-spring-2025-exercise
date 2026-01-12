@@ -2,29 +2,34 @@ import { useCallback, useEffect, useState } from "react";
 import { FilterOptions } from "../types/IPaginatedRequest";
 import { getPaginatedDailyValues } from "../services/electricitySerivce";
 import { IPaginatedResult } from "../types/IPaginationResult";
-import { IPaginatedRequst } from "../types/IPaginatedRequest";
 
 export const usePagnitaionRequest = () => {
   const [filterBy, setFilterBy] = useState<FilterOptions>(FilterOptions.Date);
-  const [asc, setAsc] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [itemsOnPage, setItemsOnPage] = useState<number>(15);
-  const [requestBody, setRequestBody] = useState<IPaginatedRequst>();
-  const [paginationData, setPaginationData] = useState<IPaginatedResult | undefined>();
+  // make default object not specifically used for anything more to avoid errors with
+  // uninitialized objects of this type being used around applicaiton
+  const [paginationData, setPaginationData] = useState<IPaginatedResult>(
+    // {
+    // success: false,
+    // message: "",
+    // data: {
+    //   items: [],
+    //   pageIndex: 0,
+    //   totalItems: 0,
+    //   totalPages: 0,
+    //   hasNextPage: false,
+    //   hasPreviousPage: false
+    // }
+    // }
+  );
+  const [loading, setLoading] = useState<Boolean>(true);
+  const [error, setError] = useState<Boolean>(false);
 
+  // send default request for data 
   useEffect(() => {
-    setRequestBody({
-      filter: filterBy,
-      orderBy: asc,
-      pageIndex: currentPage,
-      pageSize: itemsOnPage,
-    });
-  }, [filterBy, asc, currentPage, itemsOnPage]);
-  useEffect(() => {
-    if (requestBody) {
-      sendRequestForData(requestBody);
-    }
-  }, [requestBody]);
+      sendRequestForData();
+  }, []);
 
   const adjustedAmountOfItemsOnPage = useCallback((value: number) => {
     setItemsOnPage(value);
@@ -34,30 +39,36 @@ export const usePagnitaionRequest = () => {
     setCurrentPage(value);
   }, []);
 
-  const setOrderDirection = useCallback(() => {
-    setAsc((prevAsc) => !prevAsc);
-  }, []);
-
   const setFilterOption = useCallback((filter: FilterOptions) => {
     setFilterBy(filter);
   }, []);
 
-  const sendRequestForData = async (requestBody: IPaginatedRequst) => {
+  const sendRequestForData = async ()=> {
     try {
-      await getPaginatedDailyValues(requestBody).then((result) => {
-        setPaginationData(result.data);
+      await getPaginatedDailyValues().then((result) => {
+        setTimeout(() => {
+          if (result) {
+            setPaginationData(result);
+          }
+        }, 5000);
       });
     } catch (e) {
       console.log(e);
+      setError(true);
+    }
+    finally {
+      setLoading(false);
     }
   };
 
   return {
     adjustedAmountOfItemsOnPage,
     changePage,
-    setOrderDirection,
+    error,
+    loading,
     setFilterOption,
+    setItemsOnPage,
+    setCurrentPage,
     paginationData,
-    asc,
   };
 };

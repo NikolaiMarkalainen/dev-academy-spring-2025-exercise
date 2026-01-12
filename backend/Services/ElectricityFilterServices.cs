@@ -27,7 +27,7 @@ namespace backend.Services
         // return a list that displays dashboard data ? 
         // public async Task<List><Electricity>
 
-        public async Task<QueryResult<DailyValues>> ApplyFilterRule(IQueryable<DailyValues> query, NameValueCollection paramCollection)
+        public QueryResult<DailyValues> ApplyFilterRule(IQueryable<DailyValues> query, NameValueCollection paramCollection)
         {
             // base some constants we use in case none provided
             bool asc = true;
@@ -76,7 +76,7 @@ namespace backend.Services
                     QueryFields.AveragePrice => q => q.AveragePrice,
                     QueryFields.DailyConsumption => q => q.DailyConsumption,
                     QueryFields.Production => q => q.Production,
-                    QueryFields.NegativePriceLength => q => q.NegativePriceLength,
+                    QueryFields.NegativePriceLength => q => q.NegativePriceLength != null ? q.NegativePriceLength.Length : 0,
                     _ => throw new UnreachableException()
                 };
 
@@ -84,7 +84,7 @@ namespace backend.Services
             }
             return new QueryResult<DailyValues>(query, pageSize, pageIndex);
         }
-        public async Task<PaginatedElectricity<DailyValues>> GetTableValues(QueryString request)
+        public async Task<PaginatedElectricity<DailyListModel>> GetTableValues(QueryString request)
         {
             var query = _context.DailyElectricity.AsQueryable();
             var pageIndex = DEFAULT_PAGE;
@@ -93,7 +93,7 @@ namespace backend.Services
             if (request.HasValue)
             {
                 var paramCollection = HttpUtility.ParseQueryString(request.Value);
-                var (filteredQuery, index, size) = await ApplyFilterRule(query, paramCollection);
+                var (filteredQuery, index, size) = ApplyFilterRule(query, paramCollection);
                 query = filteredQuery;
                 pageIndex = index;
                 pageSize = size;
@@ -105,18 +105,22 @@ namespace backend.Services
             var electricityData = await query
                 .Skip((pageIndex - 1) * pageSize)
                 .Take(pageSize)
+                .Select(x => new DailyListModel
+                {
+                    Id = x.Id,
+                    Date = x.Date,
+                    AveragePrice = Math.Round(x.AveragePrice, 2),
+                    DailyConsumption = Math.Round(x.DailyConsumption, 2),
+                    NegativePriceLength = x.NegativePriceLength != null
+                     ? x.NegativePriceLength.Length
+                     : 0,
+                    Production = Math.Round(x.Production, 2)
+                })
                 .ToListAsync();
 
             int count = await _context.DailyElectricity.CountAsync();
             int totalPages = (int)Math.Ceiling(count / (double)pageSize);
-
-            return new PaginatedElectricity<DailyValues>(electricityData, pageIndex, totalPages);
+            return new PaginatedElectricity<DailyListModel>(electricityData, pageIndex, totalPages, count);
         }
-
-        public async Task<List<DailyValues>> GetAllDailyDataAvailable()
-        {
-            return await _context.DailyElectricity.ToListAsync();
-        }
-
     }
 }

@@ -1,8 +1,6 @@
 import "../index.css";
 import { usePagnitaionRequest } from "../hooks/usePaginationRequest";
-import { MainDataGrid } from "./MainDataGrid";
-import { Button } from "./shared/Button";
-import { Card, CardHeader, keyframes, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import { Paper, CardHeader, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TableSortLabel, CircularProgress, Skeleton } from "@mui/material";
 import { FilterOptions } from "../types/types";
 
 
@@ -21,17 +19,68 @@ import { FilterOptions } from "../types/types";
 // move types to common types folder
 export const Main = () => {
   const {
-    adjustedAmountOfItemsOnPage,
-    changePage,
-    setOrderDirection,
-    setFilterOption,
-    paginationData,
-    asc,
+   setFilterOption, paginationData, loading, error, setCurrentPage, setItemsOnPage 
   } = usePagnitaionRequest();
-  console.log(paginationData)
+
+  // Skeleton for load phase
+  if (loading || !paginationData?.data) {
+    return (
+    <Paper sx={{p: "4rem", m: "4rem", minHeight: "70vh"}} > 
+    <CardHeader sx={{textAlign: "center"}}  title={<Skeleton animation="pulse" />} subheader={<Skeleton animation="pulse"/>}>
+        </CardHeader>  
+        <TableContainer>
+            <Table>
+            <TableHead>
+              <TableRow>
+                {Object.entries(FilterOptions).map(([]) => (
+              <TableCell>
+                  <Skeleton width={50}></Skeleton>
+              </TableCell>
+              ))}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {Array.from({length: 10}).map((_) => (
+                <TableRow>
+                  <TableCell>
+                  <Skeleton width={100}/>
+                  </TableCell>
+                  <TableCell>
+                  <Skeleton width={100}/>
+                  </TableCell>
+                  <TableCell>
+                  <Skeleton width={100}/>
+                  </TableCell>
+                  <TableCell>
+                  <Skeleton width={100}/>
+                  </TableCell>
+                  <TableCell>
+                  <Skeleton width={100}/>
+                  </TableCell>
+              </TableRow>
+            ))}
+            </TableBody>
+          <Skeleton>
+            <TablePagination
+            sx={{mt: "auto"}}
+            rowsPerPageOptions={[10, 25, 50]}
+            component="div"
+            count={10}
+            rowsPerPage={10}
+            page={1}
+            onPageChange={(_, newPage: number) => {setCurrentPage(newPage)}} 
+            onRowsPerPageChange={(e) => {setItemsOnPage(parseInt(e.target.value, 10))}}
+          />
+          </Skeleton>
+            </Table> 
+          </TableContainer>
+    </Paper>
+    );
+  }
+
   return (
-    <Card>
-      <CardHeader subheader="Daily data on electric consumption nation wide" title="Electric Consumption" sx={{ textAlign: "center"}}/>
+    <Paper sx={{p: "4rem", m: "4rem", minHeight: "70vh"}} > 
+      <CardHeader subheader="Daily data on electric consumption nation wide" title="Electric Consumption" sx={{ textAlign: "center" }} />
           <TableContainer>
             <Table>
             <TableHead>
@@ -42,16 +91,30 @@ export const Main = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {paginationData?.data.items.map((m) => (
-                <TableRow>
-                  {Object.entries(m).map(([key, val]) => (
-                  <TableCell key={key}>{val}</TableCell>
-                  ))}
+              {paginationData?.data.items.map((point) => (
+                <TableRow key={point.id}>
+                  <TableCell>{point.date.toString()}</TableCell>
+                  <TableCell>{point.averagePrice}</TableCell>
+                  <TableCell>{point.dailyConsumption}</TableCell>
+                  <TableCell>{point.production}</TableCell>
+                  <TableCell>{point.negativePriceLength}</TableCell>
               </TableRow>
             ))}
             </TableBody>
+          <TablePagination
+            sx={{mt: "auto"}}
+            rowsPerPageOptions={[10, 25, 50]}
+            component="div"
+            count={paginationData?.data.totalItems}
+            rowsPerPage={10}
+            // mui 0 based
+            page={paginationData.data.pageIndex - 1 }
+            onPageChange={(_, newPage: number) => {setCurrentPage(newPage)}} 
+            onRowsPerPageChange={(e) => {setItemsOnPage(parseInt(e.target.value, 10))}}
+          />
+
             </Table> 
           </TableContainer>
-    </Card>
+    </Paper>
   );
 };

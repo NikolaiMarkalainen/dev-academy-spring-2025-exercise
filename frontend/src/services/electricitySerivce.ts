@@ -1,14 +1,14 @@
 import axios from "axios";
-import { IPaginatedRequst } from "../types/IPaginatedRequest";
 
 const api = import.meta.env.VITE_API_URL;
-export const getPaginatedDailyValues = async (query: IPaginatedRequst) => {
+export const getPaginatedDailyValues = async () => {
+  const urlParams = new URLSearchParams(document.location.search);
+  console.log(urlParams)
   const result = await axios.get(`${api}/api/FilterElectricity`, {
     params: {
-      query
-    }
+    },
   })
-  return result;
+  return result.data;
 };
 
 export const getSingleDayData = async (date: string) => {

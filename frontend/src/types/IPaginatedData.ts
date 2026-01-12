@@ -6,4 +6,5 @@ export interface IPaginatedData {
   items: IDailyValues[];
   hasNextPage: boolean;
   hasPreviousPage: boolean;
+  totalItems: number;
 }

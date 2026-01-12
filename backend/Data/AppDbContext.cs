@@ -6,17 +6,17 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace backend.Data
 {
-    public class AppDbContext: DbContext
+    public class AppDbContext : DbContext
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options){}
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
         public DbSet<Electricity> Electricity { get; set; }
         public DbSet<DailyValues> DailyElectricity { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            
+
             base.OnModelCreating(modelBuilder);
-            
+
             modelBuilder.Entity<Electricity>().ToTable("electricitydata");
             modelBuilder.Entity<Electricity>().Metadata.SetIsTableExcludedFromMigrations(true);
             modelBuilder.Entity<DailyValues>().ToTable("dailyelectricity");
