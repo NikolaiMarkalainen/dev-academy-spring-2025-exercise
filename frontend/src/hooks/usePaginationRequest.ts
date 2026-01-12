@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { getPaginatedDailyValues } from "../services/electricitySerivce";
 import { IDailyValues, IPaginatedResult} from "../types/types";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 export const usePagnitaionRequest = () => {
   const [paginationData, setPaginationData] = useState<IPaginatedResult>();
   const [loading, setLoading] = useState<Boolean>(true);
   const [error, setError] = useState<Boolean>(false);
   const [searchParams, setSearchParams] = useSearchParams();
   
+  const navigate = useNavigate();
   
   // url query params
   const sortBy = searchParams.get('sortBy') ?? "date";
@@ -63,6 +64,10 @@ export const usePagnitaionRequest = () => {
       return prev;
     })
   }
+
+  const viewDayDetails = (date: Date) => {
+    navigate(`/date/${new Date(date).toISOString().split("T")[0]}`)
+  }
   return {
     error,
     loading,
@@ -73,6 +78,7 @@ export const usePagnitaionRequest = () => {
     changeAmount,
     size,
     changePage,
-    page
+    page,
+    viewDayDetails,
   };
 };

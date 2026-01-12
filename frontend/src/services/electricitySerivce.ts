@@ -8,6 +8,6 @@ export const getPaginatedDailyValues = async () => {
 };
 
 export const getSingleDayData = async (date: string) => {
-  const result = await axios.get(`${api}/api/DailyElectricity?date=${date}`);
+  const result = await axios.get(`${api}/api/DailyElectricity`, {params: {date: date}});
   return result;
 };

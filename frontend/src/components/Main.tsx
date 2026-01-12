@@ -19,7 +19,7 @@ import { HeadCells } from "../types/types";
 // move types to common types folder
 export const Main = () => {
   const {
-  paginationData, loading, error, order, sortBy, handleSort, changeAmount, size, changePage
+  paginationData, loading, error, order, sortBy, handleSort, changeAmount, size, changePage, viewDayDetails
   } = usePagnitaionRequest();
 
   // Skeleton for load phase build a quick spin when data already is on the page
@@ -110,7 +110,7 @@ export const Main = () => {
             </TableHead>
             <TableBody>
               {paginationData?.data.items.map((point) => (
-                <TableRow key={point.id} onClick={() => {console.log("click", point)}} sx={{ cursor:'pointer'}}>
+                <TableRow key={point.id} onClick={() => {viewDayDetails(point.date)}} sx={{ cursor:'pointer'}}>
                   <TableCell>{new Date(point.date).toLocaleDateString()}</TableCell>
                   <TableCell align="right">{point.averagePrice}</TableCell>
                   <TableCell align="right">{point.dailyConsumption}</TableCell>

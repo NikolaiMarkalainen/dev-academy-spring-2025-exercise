@@ -6,7 +6,7 @@ export const App = () => {
     <Routes>
       <Route path="/" element={<Main />} />
       <Route path="*" element={<Navigate to={"/"} />} />
-      <Route path=":date" element={<SingleDayView />} />
+      <Route path="/date/:date" element={<SingleDayView />} />
     </Routes>
   );
 };

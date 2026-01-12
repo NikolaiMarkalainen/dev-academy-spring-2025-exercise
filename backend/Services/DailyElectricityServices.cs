@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using backend.Data;
 using backend.Utils;
+using System.Web;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 namespace backend.Services
 {
     public class DailyElectricityServices
@@ -17,8 +19,36 @@ namespace backend.Services
             return await _context.Electricity.ToListAsync();
         }
 
-        public async Task<List<Electricity>> GetDailyElictricityDataAsync(DateTime date) 
+        public async Task<List<Electricity>> GetDailyElictricityDataAsync(QueryString query)
         {
+            DateTime date = DateTime.MinValue;
+            bool dateFound = false;
+            if (!query.HasValue)
+            {
+                throw new ArgumentException("Query missing a value");
+            }
+            var strings = HttpUtility.ParseQueryString(query.Value);
+            foreach (var key in strings.AllKeys)
+            {
+                var value = strings[key];
+                if (key == null)
+                {
+                    throw new ArgumentException("Query key is null");
+                }
+                if (key.Equals("date", StringComparison.OrdinalIgnoreCase))
+                {
+                    if (DateTime.TryParse(value, out DateTime parsedDate))
+                    {
+                        date = parsedDate;
+                        dateFound = true;
+                    }
+                    else
+                    {
+                        throw new ArgumentException($"Invalid format for date: {value}");
+                    }
+                }
+            }
+            if (!dateFound) throw new ArgumentException("Date parameter not given cant continue");
             var utcDate = CommonHelpers.ConverToUTC(date);
             return await _context.Electricity.Where(p => p.Date.Date == utcDate).ToListAsync();
         }
@@ -45,13 +75,13 @@ namespace backend.Services
 
             ConsecutiveHours consecutiveData = new() { Length = 0, DayTime = [] };
             List<ConsecutiveHours> consecutiveInstanceDurations = [consecutiveData];
-            if(negativePriceWindows.Count > 1)
+            if (negativePriceWindows.Count > 1)
             {
-                for(int i = 0; i + 1 < negativePriceWindows.Count; i++)
+                for (int i = 0; i + 1 < negativePriceWindows.Count; i++)
                 {
                     var currentHour = negativePriceWindows[i];
                     var nextHour = negativePriceWindows[i + 1];
-                    if(nextHour.StartTime.Hour - currentHour.StartTime.Hour == 1)
+                    if (nextHour.StartTime.Hour - currentHour.StartTime.Hour == 1)
                     {
                         consecutiveData.Length += 1;
                         consecutiveData.DayTime.Add(currentHour.StartTime.Hour);
@@ -74,7 +104,7 @@ namespace backend.Services
         {
             var utcDate = CommonHelpers.ConverToUTC(date);
             return await _context.Electricity.Where(p => p.Date.Date == utcDate).SumAsync(p => p.ProductionAmount) ?? 0;
-        } 
+        }
         public async Task<DailyValues> GetAllDailyFilteredDataAsync(DateTime date)
         {
             DailyValues dailyData = new DailyValues
@@ -91,11 +121,11 @@ namespace backend.Services
         public async Task ProcessAndStoreDailyDataAsync()
         {
             var test = await _context.Electricity.ToListAsync();
-            var allElectricityData = await _context.Electricity.GroupBy(e=> e.Date).ToListAsync();
+            var allElectricityData = await _context.Electricity.GroupBy(e => e.Date).ToListAsync();
 
             var filteredDailyData = new List<DailyValues>();
 
-            foreach(var item in allElectricityData)
+            foreach (var item in allElectricityData)
             {
                 filteredDailyData.Add(new DailyValues
                 {
