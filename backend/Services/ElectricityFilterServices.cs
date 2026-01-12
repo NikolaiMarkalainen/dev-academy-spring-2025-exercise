@@ -42,8 +42,10 @@ namespace backend.Services
                 {
                     throw new ArgumentException($"Something went wrong with key missing");
                 }
-                if (QueryConfig.FieldSorts.TryGetValue(key, out var field))
+                if (key.Equals("sortBy", StringComparison.OrdinalIgnoreCase))
                 {
+                    if (!QueryConfig.FieldSorts.TryGetValue(value!, out var field))
+                        throw new ArgumentException($"Invalid order value: {value}");
                     sortField = field;
                     continue;
                 }
@@ -57,12 +59,13 @@ namespace backend.Services
                             break;
                         case SortFields.PageIndex:
                             if (int.TryParse(value, out var page))
-                                pageIndex = Math.Max(1, page);
+                                pageIndex = page;
                             break;
                         case SortFields.PageSize:
                             if (int.TryParse(value, out var size))
-                                pageSize = Math.Max(1, size);
+                                pageSize = size;
                             break;
+
                     }
                     continue;
                 }
@@ -93,7 +96,7 @@ namespace backend.Services
             if (request.HasValue)
             {
                 var paramCollection = HttpUtility.ParseQueryString(request.Value);
-                var (filteredQuery, index, size) = ApplyFilterRule(query, paramCollection);
+                var (filteredQuery, size, index) = ApplyFilterRule(query, paramCollection);
                 query = filteredQuery;
                 pageIndex = index;
                 pageSize = size;

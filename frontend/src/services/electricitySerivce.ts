@@ -3,11 +3,7 @@ import axios from "axios";
 const api = import.meta.env.VITE_API_URL;
 export const getPaginatedDailyValues = async () => {
   const urlParams = new URLSearchParams(document.location.search);
-  console.log(urlParams)
-  const result = await axios.get(`${api}/api/FilterElectricity`, {
-    params: {
-    },
-  })
+  const result = await axios.get(`${api}/api/FilterElectricity`, {params: urlParams})
   return result.data;
 };
 

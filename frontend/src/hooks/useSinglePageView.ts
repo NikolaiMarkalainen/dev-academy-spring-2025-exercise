@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ISingleDateObject } from "../types/ISingleDateObject";
+import { ISingleDateObject } from "../types/types";
 import { getSingleDayData } from "../services/electricitySerivce";
 
 export const useSinglePageView = (date: string) => {

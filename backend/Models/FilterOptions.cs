@@ -13,7 +13,8 @@ public enum SortFields
 {
     PageSize,
     PageIndex,
-    OrderBy
+    OrderBy,
+    SortBy
 }
 
 public static class QueryConfig
@@ -22,9 +23,9 @@ public static class QueryConfig
     new(StringComparer.OrdinalIgnoreCase)
     {
         {"date", QueryFields.Date},
-        {"price", QueryFields.AveragePrice},
-        {"consumption", QueryFields.DailyConsumption},
-        {"nlength", QueryFields.NegativePriceLength},
+        {"averagePrice", QueryFields.AveragePrice},
+        {"dailyConsumption", QueryFields.DailyConsumption},
+        {"negativePriceLength", QueryFields.NegativePriceLength},
         {"production", QueryFields.Production},
     };
 
@@ -32,8 +33,9 @@ public static class QueryConfig
     new(StringComparer.OrdinalIgnoreCase)
     {
         {"page", SortFields.PageIndex},
-        {"dir",  SortFields.OrderBy},
-        {"size", SortFields.PageSize }
+        {"sortBy",  SortFields.SortBy},
+        {"size", SortFields.PageSize },
+        {"order", SortFields.OrderBy}
     };
 }
 

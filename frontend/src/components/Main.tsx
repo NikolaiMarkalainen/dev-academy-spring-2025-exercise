@@ -19,13 +19,13 @@ import { FilterOptions, HeadCells } from "../types/types";
 // move types to common types folder
 export const Main = () => {
   const {
-   setFilterOption, direction, paginationData, loading, error, setCurrentPage, setItemsOnPage 
+  paginationData, loading, error, order, sortBy, handleSort, changeAmount, size, page, changePage
   } = usePagnitaionRequest();
 
-  // Skeleton for load phase
-  if (loading || !paginationData?.data) {
+  // Skeleton for load phase build a quick spin when data already is on the page
+  if (loading && !paginationData?.data || !paginationData?.data) {
     return (
-    <Paper sx={{p: "4rem", m: "4rem", minHeight: "70vh"}} > 
+    <Paper sx={{p: "4rem", m: "4rem", minHeight: "70vh", borderRadius:"1rem"}} > 
       
       <CardHeader subheader={<Skeleton/>} title={
           <Skeleton
@@ -79,18 +79,21 @@ export const Main = () => {
   }
 
   return (
-    <Paper sx={{p: "4rem", m: "4rem", minHeight: "70vh"}} > 
+    <Paper sx={{p: "4rem", m: "4rem", minHeight: "70vh", borderRadius:"1rem"}} > 
       <CardHeader subheader="Daily data on electric consumption nation wide" title={
         <Typography component="h1" variant="h3">
           Electric Consumption
         </Typography>}
-        sx={{ textAlign: "center" }} />
+      />
           <TableContainer sx={{mt: "4rem"}}>
             <Table>
             <TableHead>
                 {HeadCells.map((hCell) => (
-                  <TableCell align={hCell.label === "Date" ? "left" : "right"} key={hCell.id}>
-                    <TableSortLabel>
+                  <TableCell align={hCell.label === "Date" ? "left" : "right"} key={hCell.id} sortDirection={sortBy === hCell.id ? order : false}>
+                    <TableSortLabel
+                    active={sortBy === hCell.id}
+                      direction={sortBy === hCell.id ? order : "asc"}
+                    onClick={() => handleSort(hCell.id)}>
                       {hCell.label}
                     </TableSortLabel>        
                   </TableCell>
@@ -98,12 +101,12 @@ export const Main = () => {
             </TableHead>
             <TableBody>
               {paginationData?.data.items.map((point) => (
-                <TableRow key={point.id}>
-                  <TableCell>{point.date.toString()}</TableCell>
+                <TableRow key={point.id} onClick={() => {console.log("click", point)}} sx={{ cursor:'pointer'}}>
+                  <TableCell>{new Date(point.date).toLocaleDateString()}</TableCell>
                   <TableCell align="right">{point.averagePrice}</TableCell>
                   <TableCell align="right">{point.dailyConsumption}</TableCell>
-                  <TableCell align="right">{point.production}</TableCell>
                   <TableCell align="right">{point.negativePriceLength}</TableCell>
+                  <TableCell align="right">{point.production}</TableCell>
               </TableRow>
             ))}
             </TableBody>
@@ -114,11 +117,11 @@ export const Main = () => {
             rowsPerPageOptions={[10, 25, 50]}
             component="div"
             count={paginationData?.data.totalItems}
-            rowsPerPage={10}
+            rowsPerPage={Number(size)}
             // mui 0 based
             page={paginationData.data.pageIndex - 1 }
-            onPageChange={(_, newPage: number) => {setCurrentPage(newPage)}} 
-            onRowsPerPageChange={(e) => {setItemsOnPage(parseInt(e.target.value, 10))}}
+            onPageChange={(_, newPage: number) => {changePage(newPage + 1)}} 
+            onRowsPerPageChange={(e) => {changeAmount(parseInt(e.target.value, 10))}}
           />
     </Paper>
   );
