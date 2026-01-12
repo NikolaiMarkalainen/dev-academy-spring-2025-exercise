@@ -1,7 +1,7 @@
 import "../index.css";
 import { usePagnitaionRequest } from "../hooks/usePaginationRequest";
 import { Typography, Paper, CardHeader, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TableSortLabel, CircularProgress, Skeleton, Box } from "@mui/material";
-import { FilterOptions, HeadCells } from "../types/types";
+import { HeadCells } from "../types/types";
 
 
 
@@ -19,10 +19,19 @@ import { FilterOptions, HeadCells } from "../types/types";
 // move types to common types folder
 export const Main = () => {
   const {
-  paginationData, loading, error, order, sortBy, handleSort, changeAmount, size, page, changePage
+  paginationData, loading, error, order, sortBy, handleSort, changeAmount, size, changePage
   } = usePagnitaionRequest();
 
   // Skeleton for load phase build a quick spin when data already is on the page
+  if (error) {
+    return(
+    <Paper sx={{ p: "4rem", m: "4rem", minHeight: "70vh", borderRadius: "1rem" }} >
+      <Typography>
+        Something went wrong
+      </Typography>
+    </Paper>
+    );
+  }
   if (loading && !paginationData?.data || !paginationData?.data) {
     return (
     <Paper sx={{p: "4rem", m: "4rem", minHeight: "70vh", borderRadius:"1rem"}} > 
@@ -117,9 +126,9 @@ export const Main = () => {
             rowsPerPageOptions={[10, 25, 50]}
             component="div"
             count={paginationData?.data.totalItems}
-            rowsPerPage={Number(size)}
+            rowsPerPage={size}
             // mui 0 based
-            page={paginationData.data.pageIndex - 1 }
+            page={paginationData.data.pageIndex - 1}
             onPageChange={(_, newPage: number) => {changePage(newPage + 1)}} 
             onRowsPerPageChange={(e) => {changeAmount(parseInt(e.target.value, 10))}}
           />

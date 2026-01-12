@@ -12,8 +12,8 @@ export const usePagnitaionRequest = () => {
   // url query params
   const sortBy = searchParams.get('sortBy') ?? "date";
   const order = (searchParams.get('order') as 'asc' | 'desc') ?? 'asc'
-  const size = searchParams.get('size') ?? 10;
-  const page = searchParams.get('page') ?? 1;
+  const size = Number(searchParams.get('size') ?? 10);
+  const page = Number(searchParams.get('page') ?? 1);
 
   // send default request for data 
   useEffect(() => {
@@ -53,6 +53,7 @@ export const usePagnitaionRequest = () => {
   const changeAmount = (rows: number) => {
     setSearchParams(prev => {
       prev.set('size', rows.toString());
+      prev.set('page', '1');
       return prev;
     });
   };
