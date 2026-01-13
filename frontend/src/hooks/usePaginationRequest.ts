@@ -25,7 +25,6 @@ export const usePagnitaionRequest = () => {
           }
         });
       } catch (e) {
-        console.log(e);
         setError(true);
       }
       finally {

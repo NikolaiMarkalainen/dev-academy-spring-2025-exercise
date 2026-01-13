@@ -1,4 +1,4 @@
-import { Box, TextField} from "@mui/material";
+import { Box, TextField, Typography} from "@mui/material";
 import { GraphFields } from "../types/types";
 import { Graph } from "./Graph";
 
@@ -8,9 +8,9 @@ export const SingleDayView = () => {
       {GraphFields.map((field) => (
         <Graph field={field} />
       ))}
-      <TextField>
-        TESt
-      </TextField>
+      <Typography>
+        test
+    </Typography>
     </Box>
   );
 };

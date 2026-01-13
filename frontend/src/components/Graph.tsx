@@ -8,9 +8,9 @@ export const Graph = ({ field }: { field: GraphProps }) => {
   if (!date) return <>Unable to find data</>;
   const { mapWithKey, seriesType, setSeriesType, series} = useSinglePageView(date, field);
 
-  console.log(series)
+  
   return (
-    <Box>
+    <Box sx={{color: 'white'}}>
       <TextField select value={seriesType}
         onChange={(e) => {
           setSeriesType(e.target.value as 'line' | 'bar')

@@ -1,6 +1,6 @@
 import "../index.css";
 import { usePagnitaionRequest } from "../hooks/usePaginationRequest";
-import { Typography, Paper, CardHeader, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TableSortLabel, CircularProgress, Skeleton, Box } from "@mui/material";
+import { Typography, Paper, CardHeader, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TableSortLabel, Skeleton } from "@mui/material";
 import { HeadCells } from "../types/types";
 
 
@@ -89,11 +89,7 @@ export const Main = () => {
 
   return (
     <Paper sx={{p: "4rem", m: "4rem", minHeight: "70vh", borderRadius:"1rem"}} > 
-      <CardHeader subheader="Daily data on electric consumption nation wide" title={
-        <Typography component="h1" variant="h3">
-          Electric Consumption
-        </Typography>}
-      />
+      <CardHeader subheader="Daily data on electric consumption nation wide" title="Electric Consumption"/>
           <TableContainer sx={{mt: "4rem"}}>
             <Table>
             <TableHead>
