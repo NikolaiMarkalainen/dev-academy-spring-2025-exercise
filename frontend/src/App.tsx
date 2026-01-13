@@ -7,9 +7,9 @@ export const App = () => {
   return (
     <ThemeProvider theme={theme} >
     <Routes>
-      <Route path="/" element={<Main />} />
-      <Route path="*" element={<Navigate to={"/"} />} />
-      <Route path="/date/:date" element={<SingleDayView />} />
+        <Route path="/" element={<Main />}>
+          <Route path="/date/:date" element={<SingleDayView />} />
+        </Route>
     </Routes>
     </ThemeProvider>
   );

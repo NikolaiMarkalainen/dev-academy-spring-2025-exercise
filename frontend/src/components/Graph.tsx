@@ -1,16 +1,11 @@
 import { Box, TextField, MenuItem } from "@mui/material"
 import { ChartDataProvider, ChartsLegend, ChartsTooltip, ChartsXAxis, ChartsYAxis, BarPlot, LinePlot, ChartsAxisHighlight, ChartsSurface } from "@mui/x-charts"
-import { useParams } from "react-router-dom";
-import { useSinglePageView } from "../hooks/useSinglePageView";
-import { GraphProps } from "../types/types";
-export const Graph = ({ field }: { field: GraphProps }) => {
-  const { date } = useParams();
-  if (!date) return <>Unable to find data</>;
-  const { mapWithKey, seriesType, setSeriesType, series} = useSinglePageView(date, field);
-
-  
+import { GraphProps, ISingleDateObject } from "../types/types";
+import { useGraphFieldParsing } from "../hooks/useGraphFieldParsing";
+export const Graph = ({ field, data }: { field: GraphProps, data: ISingleDateObject[] }) => {
+  const { mapWithKey, seriesType, setSeriesType, series} = useGraphFieldParsing(data, field);
   return (
-    <Box sx={{color: 'white'}}>
+    <Box sx={{color: 'white', p:'2rem'}}>
       <TextField select value={seriesType}
         onChange={(e) => {
           setSeriesType(e.target.value as 'line' | 'bar')

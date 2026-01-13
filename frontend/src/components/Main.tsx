@@ -2,6 +2,7 @@ import "../index.css";
 import { usePagnitaionRequest } from "../hooks/usePaginationRequest";
 import { Typography, Paper, CardHeader, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TableSortLabel, Skeleton } from "@mui/material";
 import { HeadCells } from "../types/types";
+import { Outlet } from "react-router-dom";
 
 
 
@@ -93,6 +94,7 @@ export const Main = () => {
           <TableContainer sx={{mt: "4rem"}}>
             <Table>
             <TableHead>
+                <TableRow>
                 {HeadCells.map((hCell) => (
                   <TableCell align={hCell.label === "Date" ? "left" : "right"} key={hCell.id} sortDirection={sortBy === hCell.id ? order : false}>
                     <TableSortLabel
@@ -103,6 +105,7 @@ export const Main = () => {
                     </TableSortLabel>        
                   </TableCell>
               ))}
+              </TableRow>
             </TableHead>
             <TableBody>
               {paginationData?.data.items.map((point) => (
@@ -128,6 +131,7 @@ export const Main = () => {
             onPageChange={(_, newPage: number) => {changePage(newPage + 1)}} 
             onRowsPerPageChange={(e) => {changeAmount(parseInt(e.target.value, 10))}}
           />
+          <Outlet/>
     </Paper>
   );
 };
