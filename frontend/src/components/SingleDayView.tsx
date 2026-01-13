@@ -1,20 +1,17 @@
-import { useNavigate, useParams } from "react-router-dom";
-import { useSinglePageView } from "../hooks/useSinglePageView";
-import { SingleDayCharts } from "./SingleDayCharts";
+import { Box, TextField} from "@mui/material";
+import { GraphFields } from "../types/types";
+import { Graph } from "./Graph";
 
 export const SingleDayView = () => {
-  const { date } = useParams();
-  if (!date) return <>Unable to find data</>;
-  const { dayData } = useSinglePageView(date);
-  console.log(dayData);
-
-  const navigate = useNavigate();
-
   return (
-    <div>
-      <SingleDayCharts data={dayData} date={date} />
-      <div className="single-day-button">
-      </div>
-    </div>
+    <Box sx={{ width: "100%", overflow: 'auto', display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gridTemplateRows: 'auto auto', gap: 2, color:'white'}}>
+      {GraphFields.map((field) => (
+        <Graph field={field} />
+      ))}
+      <TextField>
+        TESt
+      </TextField>
+    </Box>
   );
 };
+

@@ -100,9 +100,9 @@ export const Main = () => {
                 {HeadCells.map((hCell) => (
                   <TableCell align={hCell.label === "Date" ? "left" : "right"} key={hCell.id} sortDirection={sortBy === hCell.id ? order : false}>
                     <TableSortLabel
-                    active={sortBy === hCell.id}
+                      active={sortBy === hCell.id}
                       direction={sortBy === hCell.id ? order : "asc"}
-                    onClick={() => handleSort(hCell.id)}>
+                      onClick={() => handleSort(hCell.id)}>
                       {hCell.label}
                     </TableSortLabel>        
                   </TableCell>
@@ -112,10 +112,10 @@ export const Main = () => {
               {paginationData?.data.items.map((point) => (
                 <TableRow key={point.id} onClick={() => {viewDayDetails(point.date)}} sx={{ cursor:'pointer'}}>
                   <TableCell>{new Date(point.date).toLocaleDateString()}</TableCell>
+                  <TableCell align="right">{point.production.toLocaleString()}</TableCell>
+                  <TableCell align="right">{point.dailyConsumption.toLocaleString()}</TableCell>
                   <TableCell align="right">{point.averagePrice}</TableCell>
-                  <TableCell align="right">{point.dailyConsumption}</TableCell>
                   <TableCell align="right">{point.negativePriceLength}</TableCell>
-                  <TableCell align="right">{point.production}</TableCell>
               </TableRow>
             ))}
             </TableBody>

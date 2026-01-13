@@ -51,7 +51,8 @@ using (var scope = app.Services.CreateScope())
     var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     var dailyElectricityServices = scope.ServiceProvider.GetRequiredService<DailyElectricityServices>();
     dbContext.Database.Migrate();
-    dbContext.RemoveNullEntriesFromElectricityData();
+    await dbContext.RemoveNullEntriesFromElectricityData();
+    await dbContext.SanitizeData();
     var hasDailyElectricity = dbContext.DailyElectricity.Any();
     if (!hasDailyElectricity)
     {

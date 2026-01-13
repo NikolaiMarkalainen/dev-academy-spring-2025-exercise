@@ -23,9 +23,15 @@ namespace backend.Data
             /*Dont allow entries that dont contribute to data instead eat away at memory*/
             modelBuilder.Entity<DailyValues>().OwnsOne(d => d.NegativePriceLength);
         }
-        public async void RemoveNullEntriesFromElectricityData()
+        public async Task RemoveNullEntriesFromElectricityData()
         {
             await Database.ExecuteSqlRawAsync($"DELETE from electricitydata WHERE productionamount IS NULL OR consumptionamount IS NULL OR hourlyprice IS NULL");
+        }
+        public async Task SanitizeData()
+        {
+            // convert KWH to MWH for consumption since its stored in a format we don't want to display or manually parse later
+            // simple make it be stored in proper format, Also remove decimal points as we are not interested in super precise values for production and consumption amounts
+            await Database.ExecuteSqlRawAsync($"UPDATE electricitydata SET consumptionamount = ROUND(consumptionamount / 1000, 0), productionamount = ROUND(productionamount, 0)");
         }
     }
 }

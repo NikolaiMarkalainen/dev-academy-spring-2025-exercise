@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using backend.Data;
 using backend.Utils;
 using System.Web;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 namespace backend.Services
 {
     public class DailyElectricityServices
@@ -52,19 +51,20 @@ namespace backend.Services
             var utcDate = CommonHelpers.ConverToUTC(date);
             return await _context.Electricity.Where(p => p.Date.Date == utcDate).ToListAsync();
         }
-
+        //EVERYTHING BELOW THIS LINE IS REMOVEABLE not exactly sure why this was built initially but maybe the seed function will come to use
+        // in case data base wont be able to update itself properly
         public async Task<decimal> GetDailyElectricityConsumptionDataAsync(DateTime date)
         {
             var utcDate = CommonHelpers.ConverToUTC(date);
             var dailyConsumption = await _context.Electricity.Where(p => p.Date.Date == utcDate).SumAsync(p => p.ConsumptionAmount);
-            return dailyConsumption ?? 0;
+            return dailyConsumption;
         }
 
         public async Task<decimal> GetDailyAverageElectricityPriceAsync(DateTime date)
         {
             var utcDate = CommonHelpers.ConverToUTC(date);
             var averagePrice = await _context.Electricity.Where(p => p.Date.Date == utcDate).AverageAsync(p => p.HourlyPrice);
-            return averagePrice ?? 0;
+            return averagePrice;
         }
 
         public async Task<ConsecutiveHours> GetDailyNegativeElectricityPriceDurationAsync(DateTime date)
@@ -103,7 +103,7 @@ namespace backend.Services
         public async Task<decimal> GetDailyProductionAmountAsync(DateTime date)
         {
             var utcDate = CommonHelpers.ConverToUTC(date);
-            return await _context.Electricity.Where(p => p.Date.Date == utcDate).SumAsync(p => p.ProductionAmount) ?? 0;
+            return await _context.Electricity.Where(p => p.Date.Date == utcDate).SumAsync(p => p.ProductionAmount);
         }
         public async Task<DailyValues> GetAllDailyFilteredDataAsync(DateTime date)
         {

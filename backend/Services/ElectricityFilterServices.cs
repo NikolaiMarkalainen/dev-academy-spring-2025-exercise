@@ -113,11 +113,11 @@ namespace backend.Services
                     Id = x.Id,
                     Date = x.Date,
                     AveragePrice = Math.Round(x.AveragePrice, 2),
-                    DailyConsumption = Math.Round(x.DailyConsumption, 2),
+                    DailyConsumption = Math.Round(x.DailyConsumption, 0),
                     NegativePriceLength = x.NegativePriceLength != null
                      ? x.NegativePriceLength.Length
                      : 0,
-                    Production = Math.Round(x.Production, 2)
+                    Production = Math.Round(x.Production, 0)
                 })
                 .ToListAsync();
 
