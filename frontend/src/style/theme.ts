@@ -56,6 +56,13 @@ const theme = createTheme({
           color:'#acd268',
         }
       }
+    },
+    MuiTypography: {
+      styleOverrides: {
+        h2: {
+        color: '#acd268'
+      }
+      }
     }
   }
 });

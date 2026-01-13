@@ -51,8 +51,6 @@ namespace backend.Services
             var utcDate = CommonHelpers.ConverToUTC(date);
             return await _context.Electricity.Where(p => p.Date.Date == utcDate).ToListAsync();
         }
-        //EVERYTHING BELOW THIS LINE IS REMOVEABLE not exactly sure why this was built initially but maybe the seed function will come to use
-        // in case data base wont be able to update itself properly
         public async Task<decimal> GetDailyElectricityConsumptionDataAsync(DateTime date)
         {
             var utcDate = CommonHelpers.ConverToUTC(date);

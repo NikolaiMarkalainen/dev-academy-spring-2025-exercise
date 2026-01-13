@@ -21,8 +21,6 @@ export const Graph = ({ field }: { field: GraphProps }) => {
       </TextField>
       <ChartDataProvider series={series} xAxis={[
           {
-            // this is a bit lengthy but its due to the fact we have to convert this in a funny way to work properly
-            // and perhaps repeats itself but its probably not that bad in the large scheme of things
             data: mapWithKey("startTime").map((m) => new Date(m).getHours()),
             scaleType: 'band',
             id: field.id,

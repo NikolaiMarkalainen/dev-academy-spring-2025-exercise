@@ -51,8 +51,13 @@ using (var scope = app.Services.CreateScope())
     var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     var dailyElectricityServices = scope.ServiceProvider.GetRequiredService<DailyElectricityServices>();
     dbContext.Database.Migrate();
+    // need to make sure we dont run this everytime we restart server for no reason
+    var needsSanitization = await dbContext.Electricity.AnyAsync(e => e.ConsumptionAmount > 100000);
+    if (needsSanitization)
+    {
+        await dbContext.SanitizeData();
+    }
     await dbContext.RemoveNullEntriesFromElectricityData();
-    await dbContext.SanitizeData();
     var hasDailyElectricity = dbContext.DailyElectricity.Any();
     if (!hasDailyElectricity)
     {
