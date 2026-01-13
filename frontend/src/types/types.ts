@@ -1,14 +1,6 @@
 
 
-export interface ISingleDateObject {
-  id: number;
-  date: Date;
-  startTime: Date;
-  productionAmount: number;
-  consumptionAmount: number;
-  hourlyPrice: number;
-}
-
+// Single day view obj
 export interface IDailyValues {
   id: number;
   date: Date;
@@ -17,39 +9,32 @@ export interface IDailyValues {
   averagePrice: number;
   production: number;
 }
+
+
+// Main page object with data
 export interface IPaginatedData {
   pageIndex: number;
   totalPages: number;
   items: IDailyValues[];
-  hasNextPage: boolean;
-  hasPreviousPage: boolean;
   totalItems: number;
 }
 
-export enum FilterOptions {
-  Date,
-  AveragePrice,
-  DailyConsumption,
-  NegativePriceLength,
-  Production,
+export interface ISingleDateObject {
+  id: number;
+  date: Date;
+  startTime: Date;
+  productionAmount: number;
+  consumptionAmount: number;
+  hourlyPrice: number;
 }
-
-export interface IPaginatedRequst {
-  orderBy: boolean;
-  filter: FilterOptions;
-  pageIndex: number;
-  pageSize: number;
-}
-export interface IDropDown {
-  key: number;
-  text: string;
-}
-
-export interface IPaginatedResult {
+// generic for dynamic data since api returns everything in this format
+export interface IPaginatedResult<T> {
   success: boolean;
   message: string;
-  data: IPaginatedData;
+  data: T;
 }
+
+
 interface HeadCell {
   id: keyof IDailyValues;
   label: string;
@@ -70,21 +55,17 @@ export const HeadCells: readonly HeadCell[] = [
   {
     id: 'dailyConsumption',
     numeric: true,
-    label: 'Daily consumption mw/h'
+    label: 'Daily Consumption (mw/h)'
   },
   {
     id: 'negativePriceLength',
     numeric: true,
-    label: 'Negative consecutive hours',
+    label:  "Consecutive hours of negative prices ",
   },
   {
     id: 'production',
     numeric: true,
-    label: 'Produced Electricity',
+    label: 'Production (MW/h)',
   }
 
 ]
-
-export interface IElectricFieldRows {
-  date: Date
-}

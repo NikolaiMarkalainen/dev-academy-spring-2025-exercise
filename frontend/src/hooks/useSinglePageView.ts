@@ -19,7 +19,7 @@ export const useSinglePageView = (date: string) => {
   }, [date]);
 
   const fetchDataByDate = async () => {
-    await getSingleDayData(date).then((result) => setDayData(result.data.data));
+    await getSingleDayData(date).then((result) => setDayData(result.data));
   };
 
   return { dayData };

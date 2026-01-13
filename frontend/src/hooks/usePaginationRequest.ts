@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { getPaginatedDailyValues } from "../services/electricitySerivce";
-import { IDailyValues, IPaginatedResult} from "../types/types";
+import { IDailyValues, IPaginatedData, IPaginatedResult} from "../types/types";
 import { useNavigate, useSearchParams } from "react-router-dom";
 export const usePagnitaionRequest = () => {
-  const [paginationData, setPaginationData] = useState<IPaginatedResult>();
+  const [paginationData, setPaginationData] = useState<IPaginatedResult<IPaginatedData>>();
   const [loading, setLoading] = useState<Boolean>(true);
   const [error, setError] = useState<Boolean>(false);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -16,7 +16,6 @@ export const usePagnitaionRequest = () => {
   const size = Number(searchParams.get('size') ?? 10);
   const page = Number(searchParams.get('page') ?? 1);
 
-  // send default request for data 
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -36,6 +35,7 @@ export const usePagnitaionRequest = () => {
     fetchData();
   }, [page,size,sortBy,order]);
 
+  // apply sort and order accordingly
   const handleSort = (column: keyof IDailyValues) => {
     setSearchParams(prev => {
       const currentSort = prev.get('sortBy');
@@ -51,6 +51,8 @@ export const usePagnitaionRequest = () => {
     }) 
   }
 
+  // change in url the page size whilst also adjust the page back to first one
+  // this is to avoid issues of overflowing with page number when changing this setting 
   const changeAmount = (rows: number) => {
     setSearchParams(prev => {
       prev.set('size', rows.toString());
@@ -65,6 +67,7 @@ export const usePagnitaionRequest = () => {
     })
   }
 
+  // navigate to single page view of specific date
   const viewDayDetails = (date: Date) => {
     navigate(`/date/${new Date(date).toISOString().split("T")[0]}`)
   }
