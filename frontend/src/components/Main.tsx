@@ -123,6 +123,7 @@ export const Main = () => {
             <TableRow>
               {HeadCells.map((hCell) => (
                 <TableCell
+                  data-testid="headers"
                   align={hCell.label === "Date" ? "left" : "right"}
                   key={hCell.id}
                   sortDirection={sortBy === hCell.id ? order : false}
@@ -143,17 +144,28 @@ export const Main = () => {
           <TableBody>
             {paginationData.data.items.map((point) => (
               <TableRow
+                data-testid="data-rows"
                 key={point.id}
                 onClick={() => {
                   void viewDayDetails(point.date);
                 }}
                 sx={{ cursor: "pointer" }}
               >
-                <TableCell>{new Date(point.date).toLocaleDateString()}</TableCell>
-                <TableCell align="right">{point.production.toLocaleString()}</TableCell>
-                <TableCell align="right">{point.dailyConsumption.toLocaleString()}</TableCell>
-                <TableCell align="right">{point.averagePrice}</TableCell>
-                <TableCell align="right">{point.negativePriceLength}</TableCell>
+                <TableCell data-testid="date">
+                  {new Date(point.date).toLocaleDateString()}
+                </TableCell>
+                <TableCell data-testid="production" align="right">
+                  {point.production.toLocaleString()}
+                </TableCell>
+                <TableCell data-testid="consumption" align="right">
+                  {point.dailyConsumption.toLocaleString()}
+                </TableCell>
+                <TableCell data-testid="price" align="right">
+                  {point.averagePrice}
+                </TableCell>
+                <TableCell data-testid="negative" align="right">
+                  {point.negativePriceLength}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
