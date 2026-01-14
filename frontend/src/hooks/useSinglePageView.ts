@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { ISingleDateObject } from "../types/types";
 import { getSingleDayData } from "../services/electricitySerivce";
 
-export const useSinglePageView = (date: string) => {
+export const useSinglePageView = (date?: string) => {
   const [dayData, setDayData] = useState<ISingleDateObject[]>([
     {
       id: 1,
@@ -15,13 +15,14 @@ export const useSinglePageView = (date: string) => {
   ]);
 
   useEffect(() => {
-    fetchDataByDate();
+    if (!date) return;
+    const fetchDate = async () => {
+      await getSingleDayData(date).then((result) => {
+        setDayData(result.data);
+      });
+    };
+    void fetchDate();
   }, [date]);
-
-  
-  const fetchDataByDate = async () => {
-    await getSingleDayData(date).then((result) => setDayData(result.data));
-  };
 
   return { dayData };
 };

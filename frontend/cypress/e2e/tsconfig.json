@@ -1,9 +1,9 @@
 {
-  "extends": "../../tsconfig.node.json",
+  "extends": "../../tsconfig.json",
   "include": ["./**/*", "../support/**/*", "../../cypress.config.ts"],
   "compilerOptions": {
     "isolatedModules": false,
-    "types": ["cypress", "node"]
+    "types": ["cypress", "node"],
   },
   "exclude": ["vitest/globals"]
 }

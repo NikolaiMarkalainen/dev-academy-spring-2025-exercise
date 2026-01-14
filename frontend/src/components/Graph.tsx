@@ -1,28 +1,45 @@
-import { Box, TextField, MenuItem } from "@mui/material"
-import { ChartDataProvider, ChartsLegend, ChartsTooltip, ChartsXAxis, ChartsYAxis, BarPlot, LinePlot, ChartsAxisHighlight, ChartsSurface } from "@mui/x-charts"
+import { Box, TextField, MenuItem } from "@mui/material";
+import {
+  ChartDataProvider,
+  ChartsLegend,
+  ChartsTooltip,
+  ChartsXAxis,
+  ChartsYAxis,
+  BarPlot,
+  LinePlot,
+  ChartsAxisHighlight,
+  ChartsSurface,
+} from "@mui/x-charts";
 import { GraphProps, ISingleDateObject } from "../types/types";
 import { useGraphFieldParsing } from "../hooks/useGraphFieldParsing";
-export const Graph = ({ field, data }: { field: GraphProps, data: ISingleDateObject[] }) => {
-  const { mapWithKey, seriesType, setSeriesType, series} = useGraphFieldParsing(data, field);
+export const Graph = ({ field, data }: { field: GraphProps; data: ISingleDateObject[] }) => {
+  const { mapWithKey, seriesType, setSeriesType, series } = useGraphFieldParsing(data, field);
   return (
-    <Box sx={{color: 'white', p:'2rem'}}>
-      <TextField select value={seriesType}
+    <Box sx={{ color: "white", p: "2rem" }}>
+      <TextField
+        select
+        value={seriesType}
         onChange={(e) => {
-          setSeriesType(e.target.value as 'line' | 'bar')
+          setSeriesType(e.target.value as "line" | "bar");
         }}
-        label="Series type" sx={{ mt: '1rem', width: "100%" }}>
+        label="Series type"
+        sx={{ mt: "1rem", width: "100%" }}
+      >
         <MenuItem value="line">Line</MenuItem>
         <MenuItem value="bar">Bar</MenuItem>
       </TextField>
-      <ChartDataProvider series={series} xAxis={[
+      <ChartDataProvider
+        series={series}
+        xAxis={[
           {
             data: mapWithKey("startTime").map((m) => new Date(m).getHours()),
-            scaleType: 'band',
+            scaleType: "band",
             id: field.id,
-            height: 45
-          }
+            height: 45,
+          },
         ]}
-        height={480}>
+        height={480}
+      >
         <ChartsLegend />
         <ChartsTooltip />
         <ChartsSurface>

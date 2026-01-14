@@ -1,5 +1,3 @@
-
-
 // Single day view obj
 export interface IDailyValues {
   id: number;
@@ -9,7 +7,6 @@ export interface IDailyValues {
   averagePrice: number;
   production: number;
 }
-
 
 // Main page object with data
 export interface IPaginatedData {
@@ -34,7 +31,6 @@ export interface IPaginatedResult<T> {
   data: T;
 }
 
-
 interface HeadCell {
   id: keyof IDailyValues;
   label: string;
@@ -43,65 +39,64 @@ interface HeadCell {
 
 export const HeadCells: readonly HeadCell[] = [
   {
-    id: 'date',
+    id: "date",
     numeric: false,
-    label: 'Date'
+    label: "Date",
   },
   {
-    id: 'production',
+    id: "production",
     numeric: true,
-    label: 'Production (MW/h)',
+    label: "Production (MW/h)",
   },
   {
-    id: 'dailyConsumption',
+    id: "dailyConsumption",
     numeric: true,
-    label: 'Daily Consumption (MW/h)'
+    label: "Daily Consumption (MW/h)",
   },
   {
-    id: 'averagePrice',
+    id: "averagePrice",
     numeric: true,
-    label: 'Average Price'
+    label: "Average Price",
   },
   {
-    id: 'negativePriceLength',
+    id: "negativePriceLength",
     numeric: true,
-    label:  "Consecutive hours of negative prices ",
+    label: "Consecutive hours of negative prices ",
   },
-]
+];
 
 export interface GraphProps {
   // Dont need these fields for anything in particular maybe?
-  id: Exclude <keyof ISingleDateObject, "startTime"| "date" |"id">,
-  color: string,
-  label: string,
-  secondSeries?: GraphProps 
+  id: Exclude<keyof ISingleDateObject, "startTime" | "date" | "id">;
+  color: string;
+  label: string;
+  secondSeries?: GraphProps;
 }
 
 export const GraphFields: readonly GraphProps[] = [
   {
-    id: 'consumptionAmount',
-    color: '#edc949',
-    label: 'Consumption of Electricity (MW)/h'
-},
-  {
-    id: 'hourlyPrice',
-    color: '#e15759',
-    label: 'Hourly price of electricity' 
-},
-  {
-    id: 'productionAmount',
-    color: '#ff9da7',
-    label: 'Produced amount of Electricity (MW)/h' 
+    id: "consumptionAmount",
+    color: "#edc949",
+    label: "Consumption of Electricity (MW)/h",
   },
   {
-    id: 'productionAmount',
+    id: "hourlyPrice",
+    color: "#e15759",
+    label: "Hourly price of electricity",
+  },
+  {
+    id: "productionAmount",
+    color: "#ff9da7",
+    label: "Produced amount of Electricity (MW)/h",
+  },
+  {
+    id: "productionAmount",
     secondSeries: {
-      id: 'consumptionAmount',
-      color:  '#bab0ab',
-      label: 'Consumed Amount of Electricity (MW)/h'
+      id: "consumptionAmount",
+      color: "#bab0ab",
+      label: "Consumed Amount of Electricity (MW)/h",
     },
-    color:   '#59a14f',
-    label: 'Produced amount of Electricity (MW)/h' 
+    color: "#59a14f",
+    label: "Produced amount of Electricity (MW)/h",
   },
-]
-
+];

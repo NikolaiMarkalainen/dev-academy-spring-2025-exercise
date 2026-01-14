@@ -1,70 +1,69 @@
-import { createTheme } from '@mui/material/styles';
+import { createTheme } from "@mui/material/styles";
 
 const theme = createTheme({
   palette: {
-    mode: 'dark', 
+    mode: "dark",
   },
   components: {
     MuiPaper: {
       styleOverrides: {
         root: {
-          backgroundColor: '#202127',
-        }
+          backgroundColor: "#202127",
+        },
       },
     },
     MuiTableSortLabel: {
       styleOverrides: {
         root: {
-          '&.Mui-active': {
-            color: '#acd268'
-          }
-        }
-      }
+          "&.Mui-active": {
+            color: "#acd268",
+          },
+        },
+      },
     },
     MuiTableCell: {
       styleOverrides: {
         root: {
-          borderBottomColor:'#c5e07a'
-        }
-      }
+          borderBottomColor: "#c5e07a",
+        },
+      },
     },
     MuiTableRow: {
       styleOverrides: {
         root: {
           "&:hover": {
-            backgroundColor:'#3a4149'
-          }
-        }
-      }
+            backgroundColor: "#3a4149",
+          },
+        },
+      },
     },
     MuiCardHeader: {
       styleOverrides: {
-        root: {
-        },
+        root: {},
         title: {
-          fontSize: '3rem',
-          color: '#acd268'
+          fontSize: "3rem",
+          color: "#acd268",
         },
         subheader: {
-          color: '#acd268'
-        }
-      }
+          color: "#acd268",
+        },
+      },
     },
     MuiTablePaginationActions: {
       styleOverrides: {
         root: {
-          color:'#acd268',
-        }
-      }
+          color: "#acd268",
+        },
+      },
     },
     MuiTypography: {
       styleOverrides: {
         h2: {
-        color: '#acd268'
-      }
-      }
-    }
-  }
+          color: "#acd268",
+        },
+      },
+    },
+  },
 });
 
 export default theme;

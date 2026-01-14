@@ -1,7 +1,4 @@
-import {
-  IPaginatedRequst,
-  FilterOptions,
-} from "../../src/types/IPaginatedRequest";
+import { IPaginatedRequst, FilterOptions } from "../../src/types/IPaginatedRequest";
 
 const website = "http://localhost:8080";
 
@@ -11,9 +8,7 @@ const compareRows = (column: number, number: boolean) => {
     .find("div")
     .eq(column)
     .then(($firstRow) => {
-      const firstRowDate = number
-        ? Number($firstRow.text())
-        : new Date($firstRow.text().trim());
+      const firstRowDate = number ? Number($firstRow.text()) : new Date($firstRow.text().trim());
 
       cy.get(".grid-row")
         .eq(column + 1)
@@ -34,9 +29,7 @@ describe("Backend api requests", () => {
     cy.visit(website);
   });
   it("Daily generic endpoint", () => {
-    cy.intercept({ method: "GET", url: "/api/dailyelectricity/data" }).as(
-      "getData",
-    );
+    cy.intercept({ method: "GET", url: "/api/dailyelectricity/data" }).as("getData");
   });
   it("Daily data by id", () => {
     cy.intercept({
@@ -91,16 +84,10 @@ describe("Frontend UI flow", () => {
     cy.get(".grid-header div").eq(0).should("contain.text", "Date").click();
     cy.get(".ascdesc").click();
     compareRows(0, false);
-    cy.get(".grid-header div")
-      .eq(1)
-      .should("contain.text", "Average Price")
-      .click();
+    cy.get(".grid-header div").eq(1).should("contain.text", "Average Price").click();
     compareRows(1, true);
 
-    cy.get(".grid-header div")
-      .eq(2)
-      .should("contain.text", "Daily Consumption (MWh/h)")
-      .click();
+    cy.get(".grid-header div").eq(2).should("contain.text", "Daily Consumption (MWh/h)").click();
     compareRows(2, true);
 
     cy.get(".grid-header div")
@@ -109,10 +96,7 @@ describe("Frontend UI flow", () => {
       .click();
 
     compareRows(3, true);
-    cy.get(".grid-header div")
-      .eq(4)
-      .should("contain.text", "Production (MWh/h)")
-      .click();
+    cy.get(".grid-header div").eq(4).should("contain.text", "Production (MWh/h)").click();
     compareRows(4, true);
   });
   it("Can navigate to single day view", () => {
