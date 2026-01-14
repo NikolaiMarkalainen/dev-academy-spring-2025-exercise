@@ -1,4 +1,3 @@
-import "../index.css";
 import { usePagnitaionRequest } from "../hooks/usePaginationRequest";
 import {
   Typography,
