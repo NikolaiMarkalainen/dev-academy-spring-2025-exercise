@@ -53,7 +53,15 @@ export const Main = () => {
   }
   if ((loading && !paginationData?.data) || !paginationData?.data) {
     return (
-      <Paper sx={{ p: "4rem", m: "4rem", minHeight: "70vh", borderRadius: "1rem" }}>
+      <Paper
+        sx={{
+          p: { md: "4rem", xs: "1rem" },
+          m: { md: "4rem", xs: "1rem" },
+          minHeight: "70vh",
+          borderRadius: "1rem",
+          overflow: "scroll",
+        }}
+      >
         <CardHeader subheader={<Skeleton />} title={<Skeleton height={80}></Skeleton>} />
         <TableContainer sx={{ mt: "4rem" }}>
           <Table>
@@ -97,7 +105,15 @@ export const Main = () => {
   }
 
   return (
-    <Paper sx={{ p: "4rem", m: "4rem", minHeight: "70vh", borderRadius: "1rem" }}>
+    <Paper
+      sx={{
+        p: { md: "4rem", xs: "1rem" },
+        m: { md: "4rem", xs: "1rem" },
+        minHeight: "70vh",
+        borderRadius: "1rem",
+        overflow: "scroll",
+      }}
+    >
       <CardHeader
         subheader="Daily data on electric consumption nation wide"
         title="Electric Consumption"

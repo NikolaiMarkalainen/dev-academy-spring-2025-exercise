@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { getPaginatedDailyValues } from "../services/electricitySerivce";
 import { IDailyValues, IPaginatedData, IPaginatedResult } from "../types/types";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
@@ -17,11 +17,12 @@ export const usePagnitaionRequest = () => {
   const page = Number(searchParams.get("page") ?? 1);
   const order: "asc" | "desc" = orderParam === "desc" ? "desc" : "asc";
   const location = useLocation();
-  const isSingleDayView = location.pathname.startsWith("/date");
+  // We are under /date/ url and we dont have pagination as in accessing via url to this singledayview
+  // when we access single day view we do want to fetch data but in other cases avoid refetching
+  const isSingleDayView = location.pathname.startsWith("/date") && paginationData !== undefined;
   useEffect(() => {
     const fetchData = async () => {
       if (isSingleDayView) {
-        console.log("This should give error");
         return;
       }
       try {
