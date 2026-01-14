@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { getPaginatedDailyValues } from "../services/electricitySerivce";
 import { IDailyValues, IPaginatedData, IPaginatedResult } from "../types/types";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 export const usePagnitaionRequest = () => {
   const [paginationData, setPaginationData] = useState<IPaginatedResult<IPaginatedData>>();
   const [loading, setLoading] = useState<boolean>(true);
@@ -11,13 +11,19 @@ export const usePagnitaionRequest = () => {
   const navigate = useNavigate();
 
   // url query params
+  const orderParam = searchParams.get("order");
   const sortBy = searchParams.get("sortBy") ?? "date";
-  const order = searchParams.get("order") as "asc" | "desc";
   const size = Number(searchParams.get("size") ?? 10);
   const page = Number(searchParams.get("page") ?? 1);
-
+  const order: "asc" | "desc" = orderParam === "desc" ? "desc" : "asc";
+  const location = useLocation();
+  const isSingleDayView = location.pathname.startsWith("/date");
   useEffect(() => {
     const fetchData = async () => {
+      if (isSingleDayView) {
+        console.log("This should give error");
+        return;
+      }
       try {
         await getPaginatedDailyValues().then((result) => {
           setPaginationData(result);
