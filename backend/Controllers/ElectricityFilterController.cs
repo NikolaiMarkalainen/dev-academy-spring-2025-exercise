@@ -2,10 +2,6 @@
 
 using Microsoft.AspNetCore.Mvc;
 using backend.Services;
-using System.Web;
-using System.Text;
-using System.Buffers;
-using Microsoft.AspNetCore.Http.Extensions;
 
 namespace backend.Controllers
 {

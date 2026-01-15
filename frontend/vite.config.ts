@@ -5,10 +5,6 @@ import react from "@vitejs/plugin-react";
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, "");
   return {
-    build: {
-      outDir: "../backend//wwwroot",
-      emptyOutDir: true,
-    },
     plugins: [react()],
     server: {
       host: "0.0.0.0",

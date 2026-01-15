@@ -1,13 +1,19 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS base
 WORKDIR /backend
 
+# docker build -t solit-backend:latest .
+# docker push IMAGE arn/solit-backend:latest
 # ENV variables
 # ENV ASPNETCORE_ENVIRONMENT=Development
 # ENV ASPNETCORE_HTTP_PORTS= 
 # ENV ASPNETCORE_ENVIRONMENT=Production
-# ENV DOTNET_ENVIRONMENT=Production
+ENV DOTNET_ENVIRONMENT=Production
 COPY . .
 
+EXPOSE 80
+ENV ASPNETCORE_URLS=http://+:80.
+
+EXPOSE 80
 FROM base AS build
 WORKDIR /src
 COPY ["backend.csproj", "./"]
@@ -24,4 +30,4 @@ FROM base AS final
 
 WORKDIR /backend
 COPY --from=publish /backend/publish .
-ENTRYPOINT dotnet run
+ENTRYPOINT ["dotnet", "backend.dll"]
