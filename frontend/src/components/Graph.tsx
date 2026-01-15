@@ -15,8 +15,9 @@ import { useGraphFieldParsing } from "../hooks/useGraphFieldParsing";
 export const Graph = ({ field, data }: { field: GraphProps; data: ISingleDateObject[] }) => {
   const { mapWithKey, seriesType, setSeriesType, series } = useGraphFieldParsing(data, field);
   return (
-    <Box sx={{ color: "white", p: "2rem" }}>
+    <Box sx={{ color: "white", p: "2rem" }} data-testid="graph">
       <TextField
+        data-testid="dropdown"
         select
         value={seriesType}
         onChange={(e) => {

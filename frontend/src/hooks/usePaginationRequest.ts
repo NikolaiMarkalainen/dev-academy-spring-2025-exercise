@@ -15,7 +15,7 @@ export const usePagnitaionRequest = () => {
   const sortBy = searchParams.get("sortBy") ?? "date";
   const size = Number(searchParams.get("size") ?? 10);
   const page = Number(searchParams.get("page") ?? 1);
-  const order: "asc" | "desc" = orderParam === "desc" ? "desc" : "asc";
+  const order: "asc" | "desc" = orderParam === "asc" ? "asc" : "desc";
   const location = useLocation();
   // We are under /date/ url and we dont have pagination as in accessing via url to this singledayview
   // when we access single day view we do want to fetch data but in other cases avoid refetching

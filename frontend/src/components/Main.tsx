@@ -172,6 +172,7 @@ export const Main = () => {
         </Table>
       </TableContainer>
       <TablePagination
+        data-testid="pagination"
         rowsPerPageOptions={[10, 25, 50]}
         component="div"
         count={paginationData.data.totalItems}

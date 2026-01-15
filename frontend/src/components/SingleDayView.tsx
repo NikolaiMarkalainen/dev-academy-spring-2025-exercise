@@ -51,6 +51,7 @@ export const SingleDayView = () => {
         }}
       >
         <IconButton
+          data-testid="close"
           sx={{ position: "absolute", top: 8, right: 8 }}
           onClick={() => void navigate(-1)}
         >
