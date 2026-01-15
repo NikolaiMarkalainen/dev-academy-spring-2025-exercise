@@ -19,12 +19,10 @@ export default tseslint.config(
       globals: globals.browser,
     },
     plugins: {
-      prettier,
       "react-hooks": reactHooks,
       "react-refresh": reactRefresh,
     },
     rules: {
-      "prettier/prettier": "error",
       ...reactHooks.configs.recommended.rules,
       "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
     },

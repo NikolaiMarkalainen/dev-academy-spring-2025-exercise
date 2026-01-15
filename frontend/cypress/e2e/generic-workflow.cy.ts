@@ -165,4 +165,7 @@ describe("Single Page view tests", () => {
       cy.get("ul.MuiMenu-list").contains("Line").click();
     });
   });
+  it("Can reach single page view via url", () => {
+    cy.visit(`${baseUrl}/date/2023-08-01`);
+  });
 });

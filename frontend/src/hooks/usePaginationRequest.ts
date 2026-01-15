@@ -37,7 +37,7 @@ export const usePagnitaionRequest = () => {
       }
     };
     void fetchData();
-  }, [page, size, sortBy, order]);
+  }, [page, size, sortBy, order, isSingleDayView]);
 
   // apply sort and order accordingly
   const handleSort = (column: keyof IDailyValues) => {
