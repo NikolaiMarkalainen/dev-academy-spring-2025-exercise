@@ -90,6 +90,10 @@ run the following command:
  docker compose up --build --renew-anon-volumes -d
 ```
 
+The solution is hosted on port 8080 so the url when built with docker is
+
+> http://localhost:8080/
+
 # How to run outside of docker
 
 Comment out from the docker compose everything but the solita-db image.
@@ -110,6 +114,8 @@ To see your version check with command:
 
 after which the solution should be running at port 5173
 
+> http://localhost:5173/
+
 ### Backend
 
 MAKE SURE YOU HAVE: 8.0.403
@@ -120,9 +126,11 @@ To see your dotnet version use command:
 
 `dotnet build && dotnet watch run`
 
+> http://localhost:5000/
+
 ## Test cases and showcase of basic workflow
 
-> npm run cy:open
+`npm run cy:open`
 
 Once cypress opens please choose E2E testing option.
 
