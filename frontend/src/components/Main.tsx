@@ -16,18 +16,6 @@ import {
 import { HeadCells } from "../types/types";
 import { Outlet } from "react-router-dom";
 
-// TODO:  Navigate last page
-// Filter buttons visible on keys
-// Can zoom out and zoom in
-// Tailwind
-// Utilize a component library
-// Error handling to service fetch
-// utilize url params for fetching data remove POST change to Query Params
-// filter on mobile not visible
-// playwright tests
-// mobile view fix on graph views font increase
-// add caching to backend perhaps ?
-// move types to common types folder
 export const Main = () => {
   const {
     paginationData,
