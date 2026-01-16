@@ -1,4 +1,8 @@
-const baseUrl = "http://localhost:5173";
+// CHANGE URL IF RUNNING LOCALLY TO
+// http://localhost:5173
+// else in docker use
+// http:localhost:8080
+const baseUrl = "http://localhost:8080";
 
 const sorts = ["negativePriceLength", "production", "dailyConsumption", "date", "averagePrice"];
 const verifyOrderLogic = <T>(
@@ -132,8 +136,8 @@ describe("Main page tests", () => {
   });
   it("Test different urls with different query params", () => {
     for (const sort of sorts) {
-      cy.visit(`http://localhost:5173/?sortBy=${sort}&order=asc&page=1`);
-      cy.get("[data-testid=headers").should("be.visible");
+      cy.visit(`${baseUrl}/?sortBy=${sort}&order=asc&page=1`);
+      cy.get("[data-testid=headers]").should("be.visible");
     }
   });
 });

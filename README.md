@@ -90,25 +90,35 @@ run the following command:
  docker compose up --build --renew-anon-volumes -d
 ```
 
-## If something breaks
+# How to run outside of docker
 
-During compose run a new table will be populated in case it has not been populated, please apply a database update by calling a get method to this endpoint which can be called easily in swagger
+Comment out from the docker compose everything but the solita-db image.
 
-> http://localhost:5128/swagger/index.html
-> /api/DailyElectricity/populate/database
+Run similarly to previous case with same command to initiate a database. Through docker
 
-That should be it
+After which navigate to both frontend and backend with a terminal of sorts and run following commands
 
-If for some reason application does not behave accordingly and connection is for example reset please comment out from compose both the nginx and solita-front images.
-After which you should be able to run the backend with the database normally and simply running
+### Frontend
 
-> npm run dev
+MAKE SURE YOU HAVE: Node version 24
 
-Will launch the application and will connect to the backend that is running in docker.
+To see your version check with command:
 
-The solution also has E2E testing applied which can be ran using the command:
+`node -v`
 
-Possible erros may be caused if no SDK 8.0 or Node 23v is found on the machine but this in theory shouldnt be possible.
+`  npm install &&  npm run dev`
+
+after which the solution should be running at port 5173
+
+### Backend
+
+MAKE SURE YOU HAVE: 8.0.403
+
+To see your dotnet version use command:
+
+`dotnet --version`
+
+`dotnet build && dotnet watch run`
 
 ## Test cases and showcase of basic workflow
 
@@ -117,3 +127,10 @@ Possible erros may be caused if no SDK 8.0 or Node 23v is found on the machine b
 Once cypress opens please choose E2E testing option.
 
 The tests also showcase the basic functionality of the web solution.
+
+Make sure the baseUrl is set correctly. Currently configured for Docker run
+so if running in docker running npm run cy:open should use correct url for that specific enviornment
+
+## Public url to check solution
+
+http://d1otu9eiztymh4.cloudfront.net

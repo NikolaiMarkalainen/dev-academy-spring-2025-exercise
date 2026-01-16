@@ -2,7 +2,6 @@
 
 using Microsoft.AspNetCore.Mvc;
 using backend.Services;
-using System.Linq.Expressions;
 
 namespace backend.Controllers
 {
@@ -12,6 +11,10 @@ namespace backend.Controllers
     {
         private readonly DailyElectricityServices _electricityServices;
 
+        public DailyElectricityController(DailyElectricityServices electricityServices)
+        {
+            _electricityServices = electricityServices;
+        }
         [HttpGet]
         public async Task<ActionResult<ApiResponse>> GetHourlyData()
         {
@@ -25,9 +28,10 @@ namespace backend.Controllers
             {
                 return BadRequest(new ApiResponse(false, ex.Message, null));
             }
-            catch (Exception)
+            catch (Exception Exception)
             {
-                return StatusCode(500, new ApiResponse(false, "Unexpected error", null));
+                return StatusCode(500, new ApiResponse(false, Exception.ToString(), null));
+
             }
         }
     }
